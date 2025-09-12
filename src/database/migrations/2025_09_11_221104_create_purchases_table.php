@@ -25,7 +25,7 @@ class CreatePurchasesTable extends Migration
                   ->constrained(table: 'payment_methods', column: 'id')
                   ->restrictOnDelete();
             $table->foreignId('shipping_address_id')->comment('説明')
-                  ->constrained(table: 'address', column: 'id')
+                  ->constrained(table: 'addresses', column: 'id')
                   ->restrictOnDelete();
             $table->timestamps();
         });

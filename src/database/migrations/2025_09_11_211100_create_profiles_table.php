@@ -20,7 +20,7 @@ class CreateProfilesTable extends Migration
                   ->restrictOnDelete();
             $table->string('display_name')->comment('プロフィール名');
             $table->foreignId('address_id')->comment('住所ID')
-                  ->constrained(table: 'address', column: 'id')
+                  ->constrained(table: 'addresses', column: 'id')
                   ->restrictOnDelete();
             $table->timestamps();
         });
