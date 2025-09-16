@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ItemConditionSeeder::class,
             ItemSeeder::class,
+            PaymentMethodSeeder::class,
         ]);
     }
 }
