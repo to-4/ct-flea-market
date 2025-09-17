@@ -16,3 +16,5 @@ Thumbs.db
 # .env は、環境ごとに異なるので無視
 .env
 
+# node_modules ディレクトリは無視
+/node_modules

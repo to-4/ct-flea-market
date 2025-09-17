@@ -1,4 +1,8 @@
+
+# Node.js 関連
 /node_modules
+.npm
+
 /public/hot
 /public/storage
 /storage/*.key

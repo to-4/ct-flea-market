@@ -22,6 +22,8 @@ services:
         # GID は渡さない
     volumes:
       - ./src:/var/www/
+    ports:
+      - "5173:5173" # Vite
 
   mysql:
     # mac の M1,M2 の ARM64 では、8.0 ではエラーとなる為、8.4 に変更

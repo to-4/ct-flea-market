@@ -1,11 +1,15 @@
 #FROM php:8.1-fpm
-From php:8.3-fpm
+FROM php:8.3-fpm
 
 COPY php.ini /usr/local/etc/php/
 
 # UID を受け取る(wsl対応、ファイル権限問題対策)
 # UID 宣言のみ
 ARG UID
+
+# Node.js 20 LTS を追加
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
 
 # 基本拡張とビルドに必要なツール群
 RUN apt update \

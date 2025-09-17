@@ -53,7 +53,7 @@
 ## 使用技術
 
 - PHP 8.3
-- Laravel 8.8
+- Laravel 12.28
 - MySQL 8.4
 
 ## ER 図
