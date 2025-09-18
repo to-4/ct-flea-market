@@ -4,7 +4,6 @@
 #  nginx, db → 共通の compose.yml の設定がそのまま有効
 
 services:
-
   # 開発（Xdebug 有り）
   php:
     build:
@@ -15,6 +14,7 @@ services:
         # GID は渡さない
     volumes:
       - ./src:/var/www/ # Laravel プロジェクトのマウント
+    ports:
+      - "5173:5173" # Vite 用ポートを追加
     extra_hosts:
       - "host.docker.internal:host-gateway"
-

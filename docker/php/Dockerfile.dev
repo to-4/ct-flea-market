@@ -9,7 +9,7 @@ ARG UID
 
 # Node.js 20 LTS を追加
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs npm
+    && apt-get install -y nodejs
 
 # 基本拡張とビルドに必要なツール群
 RUN apt update \
