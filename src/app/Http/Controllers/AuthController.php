@@ -1,0 +1,71 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\LoginRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+
+class AuthController extends Controller
+{
+
+    public function login()
+    {
+        return view('auth.login');
+    }
+
+    public function send(LoginRequest $request)
+    {
+        $credentials = $request->validated();
+
+        // remember チェックボックスがあれば第二引数で制御
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate();
+            return redirect()->intended(route('test')); // 成功→管理画面へ
+        }
+
+        // ここでは「認証失敗」を email フィールドのエラーとして返す（項目下に出せる）
+        throw ValidationException::withMessages([
+            'email' => 'メールアドレスまたはパスワードが正しくありません。',
+        ]);
+    }
+
+    // 登録フォームの表示
+    public function create()
+    {
+        return view('auth.register');  // resources/views/auth/register.blade.php
+    }
+
+    public function store(RegisterRequest $request)
+    {
+        // 検証はここへ来る前に完了（$request->validated() でOK）
+        $data = $request->validated();
+
+        $user = User::create([
+            'name'     => $data['name'],
+            'email'    => $data['email'],
+            'password' => Hash::make($data['password']),
+            // 必要なら管理画面用フラグやロール付与など
+            // 'is_admin' => true,
+        ]);
+
+        // そのままログインさせたい場合
+        Auth::login($user);
+
+        // 管理画面へ
+        return redirect()->intended('/admin'); // 好きな遷移先に
+    }
+
+    public function destroy(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login');
+    }
+
+}

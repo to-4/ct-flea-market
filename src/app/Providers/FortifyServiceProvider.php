@@ -31,19 +31,12 @@ class FortifyServiceProvider extends ServiceProvider
     {
         Fortify::createUsersUsing(CreateNewUser::class);
 
-        // Fortify が自動で定義するルート（ログイン画面、登録画面など）を無効化
-        Fortify::ignoreRoutes();
-
         Fortify::registerView(function () {
-            //return view('register');
-            // 404 を返す（ログイン画面は React 側に任せる）
-            abort(404);
+            return view('auth.register');
         });
 
         Fortify::loginView(function () {
-            // return view('login');
-            // 404 を返す（ログイン画面は React 側に任せる）
-            abort(404);
+            return view('auth.login');
         });
 
         RateLimiter::for('login', function (Request $request) {

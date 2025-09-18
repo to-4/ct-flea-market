@@ -45,6 +45,19 @@ body {
     /* 通常リンクも白文字 */
 }
 
+/* ログアウトリンク */
+.header__link {
+    background: none;
+    border: none;
+    color:white;
+    /* aタグと同じ色 */
+    text-decoration: none;
+    cursor: pointer;
+    font: inherit;
+    /* ボタンのデフォルトスタイルを消す */
+    padding: 0;
+}
+
 /* 出品ボタン */
 .header__nav a.btn-exhibit {
     background: white;
