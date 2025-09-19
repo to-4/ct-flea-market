@@ -1,0 +1,56 @@
+.items-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* タブ切り替え */
+.items-tabs {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+.items-tabs .tab-link {
+    text-decoration: none;
+    color: black;
+    padding-bottom: 6px;
+    font-weight: bold;
+}
+
+.items-tabs .tab-link.active {
+    color: red;
+    border-bottom: 2px solid red;
+}
+
+/* 商品グリッド */
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 24px;
+}
+
+.item-card {
+    text-align: center;
+}
+
+.item-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.item-name {
+    margin-top: 8px;
+    font-size: 14px;
+}

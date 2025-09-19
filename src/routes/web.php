@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,10 +16,12 @@ use App\Http\Controllers\AuthController;
 */
 
 Route::middleware(['auth'])->group(function () {
-    // テスト用画面
-    Route::get('/', function () { return view('test'); })->name('test');;
+    // // テスト用画面
+    // Route::get('/', function () { return view('test'); })->name('test');;
     // ログアウト処理
     Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
+    // 商品一覧画面
+    Route::get('/', [ItemController::class, 'index'])->name('index');
 });
 
 Route::middleware('guest')->group(function () {
