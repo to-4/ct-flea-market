@@ -54,3 +54,20 @@
     margin-top: 8px;
     font-size: 14px;
 }
+
+.item-form {
+    margin: 0;
+}
+
+.item-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+
+.item-button:hover .item-name {
+    text-decoration: underline;
+}

@@ -65,7 +65,8 @@ class Item extends Model
     }
     public function itemCondition()
     {
-        return $this->belongsTo(ItemCondition::class);
+        // return $this->belongsTo(ItemCondition::class);                   // 20250919
+        return $this->belongsTo(ItemCondition::class, 'item_condition_id'); // 20250919
     }
     public function purchase()
     {
@@ -77,6 +78,7 @@ class Item extends Model
     }
     public function categories()
     {
-        return $this->HasMany(Category::class, 'category_item');
+        // return $this->HasMany(Category::class, 'category_item');
+        return $this->belongsToMany(Category::class, 'category_item', 'item_id', 'category_id');
     }
 }

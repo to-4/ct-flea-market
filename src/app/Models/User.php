@@ -45,31 +45,31 @@ class User extends Authenticatable
     // リレーションメソッド
     public function profile()
     {
-        return this->hasOne(Profile::class);
+        return $this->hasOne(Profile::class);
     }
     public function purchases()
     {
-        return this->hasMany(Purchase::class);
+        return $this->hasMany(Purchase::class);
     }
     public function addresses()
     {
-        return this->hasMany(Address::class);
+        return $this->hasMany(Address::class);
     }
     public function items()
     {
-        return this->hasMany(Item::class);
+        return $this->hasMany(Item::class);
     }
     public function comments()
     {
-        return this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class);
     }
     public function likes()
     {
-        return this->hasMany(Like::class);
+        return $this->hasMany(Like::class);
     }
     public function wishlist_items()
     {
         // 多対多（中間テーブルに外部キー）
-        return this->belongsToMany(Item::class);
+        return $this->belongsToMany(Item::class);
     }
 }

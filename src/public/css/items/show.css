@@ -1,0 +1,121 @@
+.item-detail-container {
+    display: flex;
+    gap: 40px;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.item-detail-left {
+    flex: 1;
+}
+
+.item-image {
+    width: 100%;
+    aspect-ratio: 1/1;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.item-detail-right {
+    flex: 1;
+}
+
+.item-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.item-brand {
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.item-price {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.item-actions {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.btn-purchase {
+    display: inline-block;
+    background-color: #f66;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 24px;
+}
+
+.btn-purchase:hover {
+    background-color: #e55;
+}
+
+.item-description,
+.item-info,
+.item-comments {
+    margin-bottom: 24px;
+}
+
+.category-tag {
+    display: inline-block;
+    background: #eee;
+    padding: 4px 8px;
+    border-radius: 12px;
+    margin-right: 6px;
+    font-size: 12px;
+}
+
+.comment {
+    margin-bottom: 12px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+.comment-user {
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.comment-body {
+    margin: 4px 0;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.btn-comment {
+    background: #f66;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-comment:hover {
+    background: #e55;
+}

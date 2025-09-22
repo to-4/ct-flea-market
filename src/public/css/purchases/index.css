@@ -1,0 +1,100 @@
+.purchase-container {
+    display: flex;
+    gap: 40px;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.purchase-left {
+    flex: 2;
+}
+
+.purchase-item {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.purchase-item-image {
+    width: 120px;
+    height: 120px;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.purchase-item-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.purchase-item-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.purchase-item-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.purchase-item-price {
+    font-size: 18px;
+    margin-top: 8px;
+}
+
+.purchase-section {
+    margin-bottom: 24px;
+}
+
+.payment-select {
+    padding: 8px;
+    font-size: 14px;
+}
+
+.address-edit {
+    font-size: 12px;
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.address-edit:hover {
+    text-decoration: underline;
+}
+
+/* 右側サマリー */
+.purchase-right {
+    flex: 1;
+}
+
+.summary-box {
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.summary-box p {
+    display: flex;
+    justify-content: space-between;
+    margin: 6px 0;
+}
+
+.btn-purchase {
+    width: 100%;
+    background-color: #f66;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-purchase:hover {
+    background-color: #e55;
+}

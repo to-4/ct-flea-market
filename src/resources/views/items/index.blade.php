@@ -16,10 +16,21 @@
     <div class="items-grid">
         @foreach($items as $item)
             <div class="item-card">
-                <div class="item-image">
+                <!-- <div class="item-image">
                     <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
                 </div>
-                <div class="item-name">{{ $item->name }}</div>
+                <div class="item-name">{{ $item->name }}</div> -->
+
+
+                <form action="{{ route('items.show', $item->id) }}" method="post" class="item-form">
+                    @csrf
+                    <button type="submit" class="item-button">
+                        <div class="item-image">
+                            <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
+                        </div>
+                        <div class="item-name">{{ $item->name }}</div>
+                    </button>
+                </form>
             </div>
         @endforeach
     </div>
