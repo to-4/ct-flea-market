@@ -23,6 +23,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property VARCHAR(255) $display_name
  *     プロフィール名
  *
+ * @property VARCHAR(255) $image_url
+ *     画像パス
+ *
  * @property BIGINT UNSIGNED $address_id
  *     住所ID
  *
@@ -39,6 +42,7 @@ class Profile extends Model
     protected $fillable = [
         'user_id',
         'display_name',
+        'image_url',
         'address_id',
     ];
 

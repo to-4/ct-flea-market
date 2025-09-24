@@ -69,3 +69,10 @@ body {
     border: 1px solid #ccc;
     text-decoration: none;
 }
+
+/* エラーメッセージ */
+.error-message {
+    color: red;
+    font-size: 13px;
+    margin-top: 4px;
+}

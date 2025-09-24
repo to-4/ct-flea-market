@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -40,7 +40,7 @@ class AuthController extends Controller
         return view('auth.register');  // resources/views/auth/register.blade.php
     }
 
-    public function store(RegisterRequest $request)
+    public function store(StoreUserRequest $request)
     {
         // 検証はここへ来る前に完了（$request->validated() でOK）
         $data = $request->validated();
@@ -56,8 +56,8 @@ class AuthController extends Controller
         // そのままログインさせたい場合
         Auth::login($user);
 
-        // 管理画面へ
-        return redirect()->intended('/admin'); // 好きな遷移先に
+        // プロフィール設定へ
+        return redirect()->intended('/mypage');
     }
 
     public function destroy(Request $request)

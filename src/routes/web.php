@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\MypageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('purchase/{iitem_id}', [PurchaseController::class, 'index'])->name('purchase.index');
     // 購入実行
     Route::post('purchase/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');
+    // マイページ（プロフィール設定）画面
+    Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
+    // プロフィール新規作成
+    Route::post('/mypage', [MypageController::class, 'store'])->name('mypage.store');
+    // プロフィール更新
+    Route::put('/mypage', [MypageController::class, 'update'])->name('mypage.update');
 });
 
 Route::middleware('guest')->group(function () {

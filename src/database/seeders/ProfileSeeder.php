@@ -17,6 +17,7 @@ class ProfileSeeder extends Seeder
         $content = [
             'user_id' => 1,
             'display_name' => '管理者',
+            'image_url' => '',
             'address_id' => 1,
         ];
 

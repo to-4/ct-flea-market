@@ -19,6 +19,7 @@ class CreateProfilesTable extends Migration
                   ->constrained(table: 'users', column: 'id')
                   ->restrictOnDelete();
             $table->string('display_name')->comment('プロフィール名');
+            $table->string('image_url')->comment('画像パス');
             $table->foreignId('address_id')->comment('住所ID')
                   ->constrained(table: 'addresses', column: 'id')
                   ->restrictOnDelete();
