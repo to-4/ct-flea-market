@@ -27,7 +27,7 @@
                     </form>
                 </li>
                 <li><a href="/">マイページ</a></li>
-                <li><a href="/" class="btn-exhibit">出品</a></li>
+                <li><a href="/sell" class="btn-exhibit">出品</a></li>
             </ul>
         </nav>
         @endif
@@ -36,5 +36,7 @@
     <main class="main-content">
         @yield('content')
     </main>
+
+    @stack('page-js') {{-- ページ専用JSはここ --}}
 </body>
 </html>

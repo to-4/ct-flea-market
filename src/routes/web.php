@@ -34,6 +34,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/mypage', [MypageController::class, 'store'])->name('mypage.store');
     // プロフィール更新
     Route::put('/mypage', [MypageController::class, 'update'])->name('mypage.update');
+    // 出品画面
+    Route::get('/sell', [ItemController::class, 'sell'])->name('sell');
+    // 出品実行
+    Route::post('/sell', [ItemController::class, 'store'])->name('sell.post');
 });
 
 Route::middleware('guest')->group(function () {
