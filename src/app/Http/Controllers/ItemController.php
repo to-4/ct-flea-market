@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\ItemCondition;
 use App\Http\Requests\StoreItemRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
@@ -63,7 +64,9 @@ class ItemController extends Controller
         // 画像アップロード
         $imagePath = null;
         if ($request->hasFile('image_url')) {
-            $imagePath = $request->file('image_url')->store('items', 'public');
+            // 画像を storage/app/public/items フォルダに保存
+            $path = $request->file('image_url')->store('items', 'public');
+            $imagePath = Storage::url($path);  // 公開URLを生成("/storage/items/abc123.jpg")
         }
 
         // Item 登録

@@ -47,11 +47,13 @@
             <div class="form-group">
                 <label>カテゴリー</label>
                 <div class="category-tags">
-                    @php($selectedCategories = old('categories', []))
+                    @php
+                        $selectedCategories = array_map('intval', old('categories', []));
+                    @endphp
                     @foreach($categories as $category)
                         <label class="category-tag">
                             <input class="category-tag-input" type="checkbox" name="categories[]" value="{{ $category->id }}"
-                                {{ in_array($category->id, $selectedCategories, true) ? 'checked' : '' }}>
+                                {{ in_array($category->id, $selectedCategories) ? 'checked' : '' }}>
                             <span class="category-tag-label">{{ $category->name }}</span>
                         </label>
                     @endforeach
@@ -145,6 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
             preview.src = event.target.result;
             selectBtn.style.display = 'none';
             previewContainer.style.display = 'block';
+            document.getElementById('image_upload_container').classList.add('has-preview');
         };
         reader.readAsDataURL(file);
     };
@@ -161,6 +164,7 @@ document.addEventListener('DOMContentLoaded', function () {
         preview.removeAttribute('src');
         previewContainer.style.display = 'none';
         selectBtn.style.display = 'inline-block';
+        document.getElementById('image_upload_container').classList.remove('has-preview');
     });
 });
 </script>
