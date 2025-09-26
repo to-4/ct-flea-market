@@ -76,3 +76,73 @@ body {
     font-size: 13px;
     margin-top: 4px;
 }
+
+
+/* =============================
+   レスポンシブ対応
+   ============================= */
+
+/* 1400px ～ 1540px のPC幅での調整 */
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+    .header__search input {
+        width: 200px;
+        /* 検索ボックスを少し縮める */
+    }
+
+    .header__nav ul {
+        gap: 12px;
+        /* ナビゲーション間隔を調整 */
+    }
+
+    .header__logo a {
+        font-size: 18px;
+        /* ロゴ文字サイズを微調整 */
+    }
+}
+
+/* タブレット（768px～1399px） */
+@media screen and (max-width: 1399px) and (min-width: 768px) {
+    .header {
+        flex-wrap: wrap;
+        /* 折り返して縦並びに */
+        gap: 12px;
+    }
+
+    .header__search input {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .header__nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* スマホ（～767px） */
+@media screen and (max-width: 767px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header__logo {
+        margin-bottom: 12px;
+    }
+
+    .header__search input {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .header__nav ul {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .header__nav a.btn-exhibit {
+        text-align: center;
+        width: 100%;
+    }
+}

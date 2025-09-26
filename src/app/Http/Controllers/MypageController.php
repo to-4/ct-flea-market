@@ -54,8 +54,8 @@ class MypageController extends Controller
 
         // アップロード画像の保存（任意）
         $imageUrl = '';
-        if ($request->hasFile('image_url')) {
-            $path = \Illuminate\Support\Facades\Storage::disk('public')->putFile('profiles', $request->file('image_url'));
+        if ($request->file('image_url')) {
+            $path = $request->file('image_url')->store('profiles', 'public');
             $imageUrl = \Illuminate\Support\Facades\Storage::url($path);
         }
 

@@ -16,17 +16,21 @@
             @method('PUT')
         @endif
 
+
         <div class="profile-image-section">
             <div class="profile-image">
-                <img src="{{ $profile->image_url ?? asset('images/default-user.png') }}" alt="プロフィール画像">
+                <img id="profile_preview"
+                    src="{{ !empty($profile->image_url) ? asset('storage/'.$profile->image_url) : '' }}"
+                    alt=""
+                    style="{{ empty($profile->image_url) ? 'display:none;' : '' }}">
             </div>
             <label class="btn-image-upload">
                 画像を選択する
-                <input type="file" name="image_url" hidden>
-                @error('image_url')
-                    <p class="error-message">{{ $message }}</p>
-                @enderror
+                <input type="file" name="image_url" id="image_url" hidden>
             </label>
+            @error('image_url')
+                <p class="error-message">{{ $message }}</p>
+            @enderror
         </div>
 
         <div class="form-group">
@@ -67,3 +71,26 @@
     </form>
 </div>
 @endsection
+
+@push('page-js')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('image_url');
+    const preview = document.getElementById('profile_preview');
+
+    if (input && preview) {
+        input.addEventListener('change', function () {
+            const file = this.files && this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+</script>
+@endpush
