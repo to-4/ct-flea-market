@@ -27,17 +27,17 @@ Route::middleware(['auth'])->group(function () {
     // 購入画面
     Route::get('purchase/{item_id}', [PurchaseController::class, 'index'])->name('purchase.index');
     // 購入実行
-    Route::post('purchase/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');
+    Route::post('purchase', [PurchaseController::class, 'store'])->name('purchase.store');
     // 購入支払い先変更画面
     Route::get('purchase/address/{item_id}', [PurchaseController::class, 'edit'])->name('purchase.edit');
     // 購入支払い先変更実行
     Route::put('purchase/address/{item_id}', [PurchaseController::class, 'store_address'])->name('purchase.store_address');
     // マイページ
     Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
+    // プロフィール新規作成
+    Route::post('/mypage/profile/store', [MypageController::class, 'store'])->name('mypage.store');
     // マイページ（プロフィール設定）画面
     Route::get('/mypage/profile', [MypageController::class, 'edit'])->name('mypage.edit');
-    // プロフィール新規作成
-    Route::post('/mypage/profile', [MypageController::class, 'store'])->name('mypage.store');
     // プロフィール更新
     Route::put('/mypage/profile/{id}', [MypageController::class, 'update'])->name('mypage.update');
     // 出品画面

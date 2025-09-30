@@ -18,16 +18,16 @@ use Illuminate\Database\Eloquent\Model;
  *     主キーID（自動採番）
  *
  * @property UNSIGNED BIGINT $user_id
- *     商品名
+ *     ユーザID
  *
  * @property UNSIGNED BIGINT $item_id
- *     料金
+ *     商品ID
  *
  * @property UNSIGNED BIGINT $payment_method_id
- *     メーカー名
+ *     支払い方法ID
  *
  * @property UNSIGNED BIGINT $shipping_address_id
- *     説明
+ *     送付先住所ID
  *
  * @property Carbon|null $created_at
  *     タスクが作成された日時（Laravelが自動で管理）

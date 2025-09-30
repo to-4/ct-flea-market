@@ -27,7 +27,6 @@ class MypageController extends Controller
         // ユーザーのプロフィールを取得（なければ作成）
         $user->loadMissing('profile');
         $profile = $user->profile;
-
         $page = request()->query('page', 'buy'); // デフォルト(第2引数)は購入一覧
 
         if ($page === 'sell') {

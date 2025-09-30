@@ -17,10 +17,10 @@ class PurchaseController extends Controller
     /**
      * 購入画面を表示
      */
-    public function index($item_id, Request $request)
+    public function index($item_id)
     {
 
-        $address_id = $request->query('address_id'); // GETパラメータから取得
+        $address_id = request()->query('address_id'); // GETパラメータから取得
 
         // 対象の商品を取得（出品者・住所リレーションもロード）
         $item = Item::with(['user.profile.address'])->findOrFail($item_id);
@@ -52,13 +52,14 @@ class PurchaseController extends Controller
     /**
      * 購入処理を実行
      */
-    public function store(Request $request, $itemId)
+    public function store(Request $request)
     {
         $request->validate([
             'payment_method_id' => 'required|exists:payment_methods,id',
         ]);
 
-        $item = Item::findOrFail($itemId);
+        $item = Item::findOrFail($request->input('item_id'));
+        $addressId = $request->input('address_id');
 
         // すでに購入済みならリダイレクト
         if ($item->purchase) {
@@ -68,23 +69,23 @@ class PurchaseController extends Controller
 
         // 購入情報を登録
         $purchase = Purchase::create([
-            'user_id'           => Auth::id(),
-            'item_id'           => $item->id,
-            'payment_method_id' => $request->payment_method_id,
-            'status'            => 'pending', // 初期ステータス例
+            'user_id'             => Auth::id(),
+            'item_id'             => $item->id,
+            'payment_method_id'   => $request->payment_method_id,
+            'shipping_address_id' => $addressId,
         ]);
 
-        return redirect()->route('purchase.complete', $purchase->id)
+        return redirect()->route('mypage.index', ['page' => 'buy'])
                          ->with('success', '購入が完了しました！');
     }
 
     /**
      * 購入支払い先変更画面を表示
      */
-    public function edit($item_id, Request $request)
+    public function edit($item_id)
     {
 
-        $address_id = $request->query('address_id'); // GETパラメータから取得
+        $address_id = request()->query('address_id'); // GETパラメータから取得
         $address = Address::findOrFail($address_id);
 
         return view('purchases.edit', compact('address', 'item_id'));

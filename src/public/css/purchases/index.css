@@ -6,14 +6,35 @@
     padding: 0 20px;
 }
 
+/* form全体をflexに */
+.purchase-form {
+    display: flex;
+    width: 100%;
+    gap: 40px;
+}
+
 .purchase-left {
     flex: 2;
+}
+
+.purchase-section {
+    margin-bottom: 24px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid #ccc;
+}
+
+.purchase-section.no-border {
+    border-bottom: none;
 }
 
 .purchase-item {
     display: flex;
     gap: 16px;
     margin-bottom: 24px;
+}
+
+.purchase-section.supplement {
+    padding-left: 32px;
 }
 
 .purchase-item-image {
@@ -34,53 +55,104 @@
 .purchase-item-info {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-left: 18px;
 }
 
 .purchase-item-name {
     font-size: 18px;
     font-weight: bold;
+    margin-top: 0;
 }
 
 .purchase-item-price {
     font-size: 18px;
-    margin-top: 8px;
-}
-
-.purchase-section {
-    margin-bottom: 24px;
+    margin-top: 0;
 }
 
 .payment-select {
+    margin-left: 32px;
     padding: 8px;
     font-size: 14px;
+}
+
+.payment-select {
+    width: 220px;             /* 適度な幅を指定 */
+    padding: 6px 8px;         /* テキストに余白 */
+    font-size: 14px;          /* 読みやすい大きさ */
+    border: 1px solid #ccc; /* 薄い枠線 */
+    border-radius: 4px;       /* 少し角を丸める */
+    background-color: #fff; /* 背景白 */
+    appearance: auto;         /* ← ブラウザ標準の矢印を表示 */
+}
+
+.purchase-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+    padding-bottom: 24px;
 }
 
 .address-edit {
     font-size: 12px;
     color: #007BFF;
     text-decoration: none;
+    margin-left: 32px;
 }
 
 .address-edit:hover {
     text-decoration: underline;
 }
 
-/* 右側サマリー */
+.address-info {
+    margin-left: 32px;
+    font-size: 14px;
+    color: #333;
+}
+.address-info p {
+    margin-top: 0;
+}
+
+/* 右カラム */
 .purchase-right {
     flex: 1;
 }
 
 .summary-box {
     border: 1px solid #ccc;
-    padding: 16px;
+    padding: 0;
     margin-bottom: 20px;
 }
 
-.summary-box p {
+.summary-row {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 32px 32px;
+    font-size: 14px;
+}
+.summary-row p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin: 6px 0;
+}
+
+.summary-row span {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1;
+}
+.summary-row+.summary-row {
+    border-top: 1px solid #ccc;
+    /* ← 行と行の間に区切り線を入れる */
 }
 
 .btn-purchase {

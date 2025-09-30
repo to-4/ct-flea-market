@@ -34,6 +34,12 @@
     </header>
 
     <main class="main-content">
+
+        {{-- フラッシュメッセージ（任意） --}}
+        @if(session('status'))
+            <div class="flash flash-success">{{ session('status') }}</div>
+        @endif
+
         @yield('content')
     </main>
 

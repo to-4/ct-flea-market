@@ -15,16 +15,16 @@ class CreatePurchasesTable extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->comment('商品名')
+            $table->foreignId('user_id')->comment('ユーザID')
                   ->constrained(table: 'users', column: 'id')
                   ->restrictOnDelete();
-            $table->foreignId('item_id')->comment('料金')
+            $table->foreignId('item_id')->comment('商品ID')
                   ->constrained(table: 'items', column: 'id')
                   ->restrictOnDelete();
-            $table->foreignId('payment_method_id')->comment('メーカー名')
+            $table->foreignId('payment_method_id')->comment('支払い方法ID')
                   ->constrained(table: 'payment_methods', column: 'id')
                   ->restrictOnDelete();
-            $table->foreignId('shipping_address_id')->comment('説明')
+            $table->foreignId('shipping_address_id')->comment('送付先住所ID')
                   ->constrained(table: 'addresses', column: 'id')
                   ->restrictOnDelete();
             $table->timestamps();
