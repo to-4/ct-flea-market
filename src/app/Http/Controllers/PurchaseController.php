@@ -9,6 +9,7 @@ use App\Models\PaymentMethod;
 use App\Models\User;
 use App\Models\Profile;
 use App\Models\Address;
+use App\Http\Requests\StoreAddressRequest;
 use Illuminate\Support\Facades\Auth;
 
 class PurchaseController extends Controller
@@ -92,34 +93,15 @@ class PurchaseController extends Controller
     /**
      * 購入支払い先変更処理を実行
      */
-    public function store_address(Request $request, $item_id)
+    public function store_address(StoreAddressRequest $request, $item_id)
     {
-    //     $request->validate([
-    //         'postal_code' => 'required|string|max:10',
-    //         'prefecture'  => 'required|string|max:100',
-    //         'city'        => 'required|string|max:100',
-    //         'address'     => 'required|string|max:255',
-    //         'building'    => 'nullable|string|max:255',
-    //         'phone'       => 'nullable|string|max:15',
-    //     ]);
-
-    //     $address = Address::findOrFail($address_id);
-
-    //    // バリデーション済みデータを使って住所を更新
-    //    $address->update($request->only([
-    //        'postal_code',
-    //        'prefecture',
-    //        'city',
-    //        'address',
-    //        'building',
-    //        'phone',
-    //    ]));
+        $validated = $request->validated();
 
         $address = new Address();
         $address->user_id       = Auth::id();
-        $address->postal_code   = $request->input('postal_code');
-        $address->address_line1 = $request->input('address_line1');
-        $address->address_line2 = $request->input('address_line2');
+        $address->postal_code   = $validated['postal_code'];
+        $address->address_line1 = $validated['address_line1'];
+        $address->address_line2 = $validated['address_line2'];
         $address->is_default    = false;
         $address->save();
 
