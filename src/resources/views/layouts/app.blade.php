@@ -12,7 +12,7 @@
 <body>
     <header class="header">
         <div class="header__logo">
-            <a href="/">COACHTECH</a>
+            <a href="{{ route('index') }}">COACHTECH</a>
         </div>
         @if (Auth::check())
         <div class="header__search">
@@ -26,8 +26,8 @@
                         <button type="submit" class="header__link">ログアウト</button>
                     </form>
                 </li>
-                <li><a href="/">マイページ</a></li>
-                <li><a href="/sell" class="btn-exhibit">出品</a></li>
+                <li><a href="{{ route('mypage.index', ['page' => 'sell']) }}">マイページ</a></li>
+                <li><a href="{{ route('sell') }}" class="btn-exhibit">出品</a></li>
             </ul>
         </nav>
         @endif

@@ -32,7 +32,7 @@
         </div>
 
         <div class="purchase-section">
-            <h3>配送先 <a href="{{ route('index') }}" class="address-edit">変更する</a></h3>
+            <h3>配送先 <a href="{{ route('purchase.edit', ['item_id' => $item->id, 'address_id' => $userAddress->id]) }}" class="address-edit">変更する</a></h3>
             <p>〒{{ $userAddress->postal_code }}</p>
             <p>{{ $userAddress->address_line1 }} {{ $userAddress->address_line2 }}</p>
         </div>

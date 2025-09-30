@@ -1,96 +1,42 @@
 @extends('layouts.app')
 
-@section('title', 'プロフィール設定')
+@section('title', 'マイページ')
 
 @push('page-css')
 <link rel="stylesheet" href="{{ asset('css/mypages/index.css') }}">
 @endpush
 
 @section('content')
-<div class="profile-container">
-    <h2 class="profile-title">プロフィール設定</h2>
+<div class="mypage-container">
+    {{-- プロフィール情報 --}}
+    <div class="profile-section">
+        <div class="profile-image">
+            <img src="{{ $profile->image_url ? $profile->image_url : '' }}" alt="プロフィール画像">
+        </div>
+        <div class="profile-info">
+            <h2 class="profile-name">{{ $profile->display_name ?? $user->name }}</h2>
+            <a href="{{ route('mypage.edit') }}" class="btn-edit">プロフィールを編集</a>
+        </div>
+    </div>
 
-    <form action="{{ ($profile->exists ?? false) ? route('mypage.update', $profile->id) : route('mypage.store') }}" method="post" enctype="multipart/form-data" class="profile-form">
-        @csrf
-        @if($profile->exists ?? false)
-            @method('PUT')
-        @endif
+    {{-- タブ --}}
+    <div class="mypage-tabs">
+        <a href="/mypage?page=sell" class="tab-link {{ request('page') === 'sell' ? 'active' : '' }}">出品した商品</a>
+        <a href="/mypage?page=buy" class="tab-link {{ request('page') === 'buy' ? 'active' : '' }}">購入した商品</a>
+    </div>
 
-
-        <div class="profile-image-section">
-            <div class="profile-image">
-                <img id="profile_preview"
-                    src="{{ !empty($profile->image_url) ? asset('storage/'.$profile->image_url) : '' }}"
-                    alt=""
-                    style="{{ empty($profile->image_url) ? 'display:none;' : '' }}">
+    {{-- 商品一覧 --}}
+    <div class="items-grid">
+        @forelse($items as $item)
+            <div class="item-card">
+                <div class="item-image">
+                    <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
+                </div>
+                <div class="item-name">{{ $item->name }}</div>
             </div>
-            <label class="btn-image-upload">
-                画像を選択する
-                <input type="file" name="image_url" id="image_url" hidden>
-            </label>
-            @error('image_url')
-                <p class="error-message">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            <label for="displayName">ユーザー名</label>
-            <input type="text" id="displayName" name="displayName" value="{{ old('displayName', $profile->displayName) }}" >
-            @error('displayName')
-                <p class="error-message">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            <label for="postal_code">郵便番号</label>
-            <input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code', $profile->address->postal_code ?? '') }}">
-            @error('postal_code')
-                <p class="error-message">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            <label for="address_line1">住所</label>
-            <input type="text" id="address_line1" name="address_line1" value="{{ old('address_line1', $profile->address->address_line1 ?? '') }}">
-            @error('address_line1')
-                <p class="error-message">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            <label for="address_line2">建物名</label>
-            <input type="text" id="address_line2" name="address_line2" value="{{ old('address_line2', $profile->address->address_line2 ?? '') }}">
-            @error('address_line2')
-                <p class="error-message">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            <button type="submit" class="btn-update">更新する</button>
-        </div>
-    </form>
+        @empty
+            <p class="no-items">商品がありません</p>
+        @endforelse
+    </div>
 </div>
 @endsection
-
-@push('page-js')
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const input = document.getElementById('image_url');
-    const preview = document.getElementById('profile_preview');
-
-    if (input && preview) {
-        input.addEventListener('change', function () {
-            const file = this.files && this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    }
-});
-</script>
-@endpush

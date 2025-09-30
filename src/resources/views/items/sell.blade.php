@@ -17,14 +17,6 @@
         <div class="form-section">
             <label class="section-label">商品画像</label>
 
-            <!-- <div class="image-upload">
-                <input type="file" name="image_url" id="image_url" hidden>
-                <label for="image_url" class="btn-image-upload">画像を選択する</label>
-            </div>
-            <div class="image-preview" id="image_preview_container">
-                <img id="image_preview" alt="選択した商品のプレビュー">
-            </div> -->
-
             <div class="image-upload" id="image_upload_container">
                 <input type="file" name="image_url" id="image_url" hidden>
                 <label for="image_url" class="btn-image-upload" id="image_select_btn">画像を選択する</label>

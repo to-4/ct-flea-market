@@ -25,15 +25,21 @@ Route::middleware(['auth'])->group(function () {
     // 商品詳細画面
     Route::post('/items/{id}', [ItemController::class, 'show'])->name('items.show');
     // 購入画面
-    Route::get('purchase/{iitem_id}', [PurchaseController::class, 'index'])->name('purchase.index');
+    Route::get('purchase/{item_id}', [PurchaseController::class, 'index'])->name('purchase.index');
     // 購入実行
     Route::post('purchase/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');
-    // マイページ（プロフィール設定）画面
+    // 購入支払い先変更画面
+    Route::get('purchase/address/{item_id}', [PurchaseController::class, 'edit'])->name('purchase.edit');
+    // 購入支払い先変更実行
+    Route::put('purchase/address/{item_id}', [PurchaseController::class, 'store_address'])->name('purchase.store_address');
+    // マイページ
     Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
+    // マイページ（プロフィール設定）画面
+    Route::get('/mypage/profile', [MypageController::class, 'edit'])->name('mypage.edit');
     // プロフィール新規作成
-    Route::post('/mypage', [MypageController::class, 'store'])->name('mypage.store');
+    Route::post('/mypage/profile', [MypageController::class, 'store'])->name('mypage.store');
     // プロフィール更新
-    Route::put('/mypage', [MypageController::class, 'update'])->name('mypage.update');
+    Route::put('/mypage/profile/{id}', [MypageController::class, 'update'])->name('mypage.update');
     // 出品画面
     Route::get('/sell', [ItemController::class, 'sell'])->name('sell');
     // 出品実行

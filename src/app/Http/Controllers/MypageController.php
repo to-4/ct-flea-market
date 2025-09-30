@@ -4,16 +4,53 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 use App\Models\Profile;
 use App\Models\Address;
+use App\Models\Item;
+
 use App\Http\Requests\UpdateProfileRequest;
 
 class MypageController extends Controller
 {
+
+    /**
+     * マイページ画面の表示
+     */
+    public function index()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        // ユーザーのプロフィールを取得（なければ作成）
+        $user->loadMissing('profile');
+        $profile = $user->profile;
+
+        $page = request()->query('page', 'buy'); // デフォルト(第2引数)は購入一覧
+
+        if ($page === 'sell') {
+            // 出品した商品一覧（自分が出品者）
+            $items = Item::where('user_id', $user->id)
+                         ->orderBy('created_at', 'desc')
+                         ->get();
+        } else {
+            // 購入した商品一覧（Purchase 経由で取得）
+            $items = $user->purchases()
+                          ->with('item') // Purchase モデルに item() リレーションがある前提
+                          ->latest()
+                          ->get() // ユーザー購入履歴（商品データ付き）
+                          ->map(fn($purchase) => $purchase->item); // 商品データのみ抽出
+        }
+
+        return view('mypages.index', compact('user', 'items', 'profile', 'page'));
+    }
+
     /**
      * マイページ（プロフィール設定）表示
      */
-    public function index()
+    public function edit(Request $request)
     {
         $user = Auth::user();
         if (!$user) {
@@ -33,10 +70,7 @@ class MypageController extends Controller
             $profile->loadMissing('address');
         }
 
-        // ビュー側の camelCase 参照に合わせた一時属性
-        $profile->setAttribute('displayName', $profile->display_name);
-
-        return view('mypages.index', compact('profile'));
+        return view('mypages.edit', compact('profile'));
     }
 
     /**
@@ -82,7 +116,7 @@ class MypageController extends Controller
     /**
      * プロフィール更新
      */
-    public function update(Request $request, int $id)
+    public function update(UpdateProfileRequest $request, int $id)
     {
         $user = Auth::user();
         if (!$user) {
@@ -132,6 +166,6 @@ class MypageController extends Controller
 
         $profile->save();
 
-        return redirect()->route('mypage.index');
+        return redirect()->route('mypage.index', ['page' => 'sell']);
     }
 }

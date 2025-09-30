@@ -25,7 +25,7 @@ class AuthController extends Controller
         // remember チェックボックスがあれば第二引数で制御
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended(route('index')); // 成功→管理画面へ
+            return redirect()->intended(route('index')); // 成功 → 管理画面へ
         }
 
         // ここでは「認証失敗」を email フィールドのエラーとして返す（項目下に出せる）
@@ -34,10 +34,9 @@ class AuthController extends Controller
         ]);
     }
 
-    // 登録フォームの表示
     public function create()
     {
-        return view('auth.register');  // resources/views/auth/register.blade.php
+        return view('auth.register');
     }
 
     public function store(StoreUserRequest $request)
@@ -57,7 +56,7 @@ class AuthController extends Controller
         Auth::login($user);
 
         // プロフィール設定へ
-        return redirect()->intended('/mypage');
+        return redirect()->intended(route('mypage.edit'));
     }
 
     public function destroy(Request $request)
