@@ -20,10 +20,6 @@ use App\Http\Controllers\MypageController;
 Route::middleware(['auth'])->group(function () {
     // ログアウト処理
     Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
-    // 商品一覧画面
-    Route::get('/', [ItemController::class, 'index'])->name('index');
-    // 商品詳細画面
-    Route::post('/items/{id}', [ItemController::class, 'show'])->name('items.show');
     // 購入画面
     Route::get('purchase/{item_id}', [PurchaseController::class, 'index'])->name('purchase.index');
     // 購入実行
@@ -56,3 +52,7 @@ Route::middleware('guest')->group(function () {
     // ログイン処理
     Route::post('/login', [AuthController::class, 'send'])->name('login.post');
 });
+
+// 共通でアクセスできるルート
+Route::get('/', [ItemController::class, 'index'])->name('index');
+Route::post('/items/{id}', [ItemController::class, 'show'])->name('items.show');

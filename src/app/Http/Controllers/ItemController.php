@@ -19,7 +19,14 @@ class ItemController extends Controller
     public function index()
     {
         // 全商品を取得（最新順）
-        $items = Item::orderBy('created_at', 'desc')->get();
+        // $items = Item::orderBy('created_at', 'desc')->get();
+        // 購入数の多い順に並び替え、ログイン中ユーザーの商品は除外
+        $items = Item::withCount('purchase')
+            ->when(auth()->check(), function ($query) {
+                $query->where('user_id', '<>', auth()->id());
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         // ビューに渡す
         return view('items.index', compact('items'));

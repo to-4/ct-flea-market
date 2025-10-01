@@ -20,6 +20,9 @@
                     @csrf
                     <button type="submit" class="item-button">
                         <div class="item-image">
+                            @if($item->purchase_count > 0)
+                                <div class="soldout-ribbon">Sold</div>
+                            @endif
                             <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
                         </div>
                         <div class="item-name">{{ $item->name }}</div>

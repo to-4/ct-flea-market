@@ -36,12 +36,14 @@
 }
 
 .item-image {
+    position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
     background-color: #ddd;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 .item-image img {
@@ -71,3 +73,22 @@
 .item-button:hover .item-name {
     text-decoration: underline;
 }
+
+/* SOLD リボン */
+.soldout-ribbon {
+    position: absolute;
+    top: 12px;
+    left: -40px;
+    width: 140px;
+    background: red;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 8px 0;
+    transform: rotate(-45deg);
+    z-index: 2;
+    letter-spacing: 1px;
+    box-sizing: border-box;
+}
+
