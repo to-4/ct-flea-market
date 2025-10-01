@@ -16,11 +16,17 @@
         <div class="form-group">
             <label for="email">メールアドレス</label>
             <input type="email" id="email" name="email" required>
+            @error('email')
+                <p class="error-message">{{ $message }}</p>
+            @enderror
         </div>
 
         <div class="form-group">
             <label for="password">パスワード</label>
             <input type="password" id="password" name="password" required>
+            @error('password')
+                <p class="error-message">{{ $message }}</p>
+            @enderror
         </div>
 
         <div class="form-group">
