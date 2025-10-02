@@ -98,7 +98,6 @@ class LoginTest extends TestCase
         // 3. 正しい認証情報でログイン
         $formData = [
             'email' => 'taro@example.com',
-            'password' => 'password123',
         ];
         $response = $this->post(route('login.post'), $formData);
 
@@ -109,8 +108,6 @@ class LoginTest extends TestCase
     #[Test]
     public function it_logs_out_authenticated_user(): void
     {
-
-
         // 1. ユーザーを作成 & ログイン状態にする
         $user = User::factory()->create([
             'email' => 'taro@example.com',

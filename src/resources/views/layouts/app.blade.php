@@ -12,19 +12,28 @@
 <body>
     <header class="header">
         <div class="header__logo">
-            <a href="{{ route('index') }}">COACHTECH</a>
+            <!-- 20251002 -->
+            <a href="{{ route('index') }}">
+                <img src="{{ asset('images/logo.svg') }}" alt="COACHTECH ロゴ" class="logo-img">
+            </a>
+            <!-- 20251002 -->
         </div>
-        @if (Auth::check())
+        {{-- @if (Auth::check()) --}} <!-- 20251002 -->
+        @if (!Route::is('register', 'login')) <!-- 20251002 -->
         <div class="header__search">
             <input type="text" placeholder="なにをお探しですか？">
         </div>
         <nav class="header__nav">
             <ul>
                 <li>
+                    @if (Auth::check())
                     <form class="form" action="{{ route('logout') }}" method="POST" style="display: inline;">
                         @csrf
                         <button type="submit" class="header__link">ログアウト</button>
                     </form>
+                    @else
+                        <a href="{{ route('login') }}" class="header__link">ログイン</a>
+                    @endif
                 </li>
                 <li><a href="{{ route('mypage.index', ['page' => 'sell']) }}">マイページ</a></li>
                 <li><a href="{{ route('sell') }}" class="btn-exhibit">出品</a></li>

@@ -20,12 +20,35 @@
         <p class="item-price">¥{{ number_format($item->price) }} <span>(税込)</span></p>
 
         <div class="item-actions">
-            <span class="favorite">☆ {{ $item->favorites_count ?? 0 }}</span>
-            <span class="comments">💬 {{ $item->comments->count() }}</span>
+            <!-- 20251002 -->
+            <!-- <span class="favorite">☆ {{ $item->favorites_count ?? 0 }}</span>
+            <span class="comments">💬 {{ $item->comments->count() }}</span> -->
+            {{-- いいね --}}
+            <form action="{{ route('items.toggle-like', $item->id) }}" method="post" class="like-form">
+                @csrf
+                <button type="submit" class="action like-button {{ $item->likes->contains('user_id', Auth::id()) ? 'liked' : '' }}">
+                    <span class="icon">☆</span>
+                    <span class="count">{{ $item->likes->count() }}</span>
+                </button>
+            </form>
+
+            {{-- コメント --}}
+            <div class="action">
+                <span class="icon">💬</span>
+                <span class="count">{{ $item->comments->count() }}</span>
+            </div>
+            <!-- 20251002 -->
         </div>
 
+        <!-- 20251002 -->
         <!-- 下記は購入ページへのリンク -->
-        <a href="{{ route('purchase.index', $item->id) }}" class="btn-purchase">購入手続きへ</a>
+        @if ($item->purchase) {{-- purchase リレーションが存在するかどうか --}}
+            <button class="btn-purchase sold-out" disabled>売り切れました</button>
+        @else
+            <a href="{{ route('purchase.index', $item->id) }}" class="btn-purchase">購入手続きへ</a>
+        @endif
+        <!-- <a href="{{ route('purchase.index', $item->id) }}" class="btn-purchase">購入手続きへ</a> -->
+        <!-- 20251002 -->
 
         <div class="item-description">
             <h3>商品説明</h3>
@@ -51,11 +74,15 @@
                 </div>
             @endforeach
 
-            <!-- コメント投稿フォーム 未実装 -->
-            <form action="{{ route('items.show', $item->id) }}" method="post" class="comment-form">
+            <!-- コメント投稿フォーム -->
+            <form action="{{ route('comment.store', $item->id) }}" method="post" class="comment-form">
                 @csrf
                 <textarea name="body" rows="3" placeholder="商品へのコメントを入力"></textarea>
-                <button type="submit" class="btn-comment">コメントを送信する</button>
+                @auth
+                    <button type="submit" class="btn-comment">コメントを送信する</button>
+                @else
+                    <button type="button" class="btn-comment disabled" disabled>コメントするにはログインが必要です</button>
+                @endauth
             </form>
         </div>
     </div>

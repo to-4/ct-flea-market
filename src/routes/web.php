@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\MypageController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sell', [ItemController::class, 'sell'])->name('sell');
     // 出品実行
     Route::post('/sell', [ItemController::class, 'store'])->name('sell.post');
+    // いいねの追加・削除
+    Route::post('/items/{id}/like', [ItemController::class, 'toggleLike'])->name('items.toggle-like');
+
+    // コメント保存
+    Route::post('/items/comment/{item}', [CommentController::class, 'store'])->name('comment.store');
 });
 
 Route::middleware('guest')->group(function () {
@@ -55,4 +61,4 @@ Route::middleware('guest')->group(function () {
 
 // 共通でアクセスできるルート
 Route::get('/', [ItemController::class, 'index'])->name('index');
-Route::post('/items/{id}', [ItemController::class, 'show'])->name('items.show');
+Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.show');

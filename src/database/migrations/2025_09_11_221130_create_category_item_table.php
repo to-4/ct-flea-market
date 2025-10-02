@@ -19,7 +19,7 @@ class CreateCategoryItemTable extends Migration
                   ->constrained(table: 'items', column: 'id')
                   ->restrictOnDelete();
             $table->foreignId('category_id')->comment('カテゴリID')
-                  ->constrained(table: 'users', column: 'id')
+                  ->constrained(table: 'categories', column: 'id')
                   ->restrictOnDelete();
             $table->timestamps();
 

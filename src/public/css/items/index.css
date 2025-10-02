@@ -57,17 +57,41 @@
     font-size: 14px;
 }
 
+/* ↓ 20251002 ↓ */
+
+/* aタグのデフォルト装飾を無効化 */
 .item-form {
+    display: block;
     margin: 0;
+    color: inherit;        /* 親の文字色を継承（黒のまま） */
+    text-decoration: none; /* 下線を消す */
 }
 
+/* 商品名リンク（通常状態） */
+.item-name {
+    margin-top: 8px;
+    font-size: 14px;
+    color: inherit;    /* リンク色を継承 */
+}
+
+/* hover時はカーソルを変える＋アンダーラインを付けてもよい */
+.item-form:hover .item-name {
+    text-decoration: underline;    /* hover時だけ下線 */
+    cursor: pointer;               /* カーソルをポインタに */
+}
+
+
+/* ↑ 20251002 ↑ */
 .item-button {
+    display: block;
     background: none;
     border: none;
     padding: 0;
     cursor: pointer;
     text-align: center;
     width: 100%;
+    color: inherit;
+    text-decoration: none;
 }
 
 .item-button:hover .item-name {

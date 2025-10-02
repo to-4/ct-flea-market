@@ -19,7 +19,6 @@ class ItemController extends Controller
     public function index()
     {
         // 全商品を取得（最新順）
-        // $items = Item::orderBy('created_at', 'desc')->get();
         // 購入数の多い順に並び替え、ログイン中ユーザーの商品は除外
         $items = Item::withCount('purchase')
             ->when(auth()->check(), function ($query) {
@@ -42,10 +41,35 @@ class ItemController extends Controller
             'categories',    // 中間テーブル category_item 経由
             'itemCondition', // 商品状態 (item_conditions テーブル)
             'comments.user', // コメントとユーザー情報
+            'purchase',      // 購入情報 // 20251002
         ])->findOrFail($id);
 
         // ビューへ渡す
         return view('items.show', compact('item'));
+    }
+
+    /**
+     * いいねの追加・削除
+     */
+    public function toggleLike($id)
+    {
+        $item = Item::findOrFail($id);
+
+        // すでにいいねしているかチェック
+        $like = $item->likes()->where('user_id', Auth::id())->first();
+
+        if ($like) {
+            // 既にいいねしていたら削除
+            $like->delete();
+        } else {
+            // まだなら追加
+            // ※ $item->likes()->create([...]) を呼ぶと、$item->id が自動で item_id にセットされる（user_id だけ渡せば十分）
+            $item->likes()->create([
+                'user_id' => Auth::id(),
+            ]);
+        }
+
+        return back();
     }
 
     /**
