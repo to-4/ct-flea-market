@@ -85,20 +85,22 @@
 }
 
 .item-card {
-    background: #fff;
+    /* background: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: hidden; */
     text-align: center;
 }
 
 .item-image {
+    position: relative;
     width: 100%;
     aspect-ratio: 1/1;
     background: #eee;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 .item-image img {
@@ -107,13 +109,64 @@
     object-fit: cover;
 }
 
-.item-name {
-    padding: 8px;
-    font-size: 14px;
-    font-weight: bold;
-}
-
 .no-items {
     text-align: center;
     color: #999;
+}
+
+/* ↓ 20251002 ↓ */
+
+/* aタグのデフォルト装飾を無効化 */
+.item-form {
+    display: block;
+    margin: 0;
+    color: inherit;        /* 親の文字色を継承（黒のまま） */
+    text-decoration: none; /* 下線を消す */
+}
+
+/* 商品名リンク（通常状態） */
+.item-name {
+    margin-top: 8px;
+    font-size: 14px;
+    color: inherit; /* リンク色を継承 */
+}
+
+/* hover時はカーソルを変える＋アンダーラインを付けてもよい */
+.item-form:hover .item-name {
+    text-decoration: underline;  /* hover時だけ下線 */
+    cursor: pointer;             /* カーソルをポインタに */
+}
+
+.item-button {
+    display: block;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
+.item-button:hover .item-name {
+    text-decoration: underline;
+}
+
+/* SOLD リボン */
+.soldout-ribbon {
+    position: absolute;
+    top: 12px;
+    left: -40px;
+    width: 140px;
+    background: red;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 8px 0;
+    transform: rotate(-45deg);
+    z-index: 2;
+    letter-spacing: 1px;
+    box-sizing: border-box;
 }

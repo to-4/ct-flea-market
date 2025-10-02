@@ -116,3 +116,8 @@
     box-sizing: border-box;
 }
 
+.tab-link.disabled {
+    color: #aaa;         /* グレーアウト */
+    cursor: not-allowed;   /* 禁止マーク */
+    pointer-events: none;  /* クリック無効化 */
+}

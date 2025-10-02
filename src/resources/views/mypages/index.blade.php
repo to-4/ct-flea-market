@@ -29,10 +29,15 @@
     <div class="items-grid">
         @forelse($items as $item)
             <div class="item-card">
-                <div class="item-image">
-                    <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
-                </div>
-                <div class="item-name">{{ $item->name }}</div>
+                <a href="{{ route('items.show', $item->id) }}" class="item-form"> <!-- 20251002 -->
+                    <div class="item-image">
+                        @if($item->purchase_count > 0)             <!-- 20251002 -->
+                            <div class="soldout-ribbon">Sold</div> <!-- 20251002 -->
+                        @endif                                     <!-- 20251002 -->
+                        <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
+                    </div>
+                    <div class="item-name">{{ $item->name }}</div>
+                </a> <!-- 20251002 -->
             </div>
         @empty
             <p class="no-items">商品がありません</p>

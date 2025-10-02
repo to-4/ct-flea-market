@@ -21,7 +21,12 @@
         {{-- @if (Auth::check()) --}} <!-- 20251002 -->
         @if (!Route::is('register', 'login')) <!-- 20251002 -->
         <div class="header__search">
-            <input type="text" placeholder="なにをお探しですか？">
+            <!-- ↓ 20251002 ↓ -->
+             <form action="{{ route('index') }}" method="GET">
+                <input type="text" name="keyword" placeholder="なにをお探しですか？"
+                        value="{{ request('keyword') }}">
+            </form>
+            <!-- ↑ 20251002 ↑ -->
         </div>
         <nav class="header__nav">
             <ul>

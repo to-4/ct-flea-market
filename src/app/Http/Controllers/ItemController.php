@@ -18,14 +18,48 @@ class ItemController extends Controller
      */
     public function index()
     {
-        // 全商品を取得（最新順）
-        // 購入数の多い順に並び替え、ログイン中ユーザーの商品は除外
-        $items = Item::withCount('purchase')
-            ->when(auth()->check(), function ($query) {
-                $query->where('user_id', '<>', auth()->id());
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
+
+        $tab = request()->query('tab', 'recommend');
+        $keyword = request()->query('keyword'); // 検索キーワード
+
+        // == ↓ 20251002 ↓ == //
+        // // 全商品を取得（最新順）
+        // // 購入数の多い順に並び替え、ログイン中ユーザーの商品は除外
+        // $items = Item::withCount('purchase')
+        //     ->when(auth()->check(), function ($query) {
+        //         $query->where('user_id', '<>', auth()->id());
+        //     })
+        //     ->orderBy('created_at', 'desc')
+        //     ->get();
+        if ($tab === 'mylist' && auth()->check()) {
+            // マイリスト表示: likes テーブルからログインユーザのいいね商品
+            $items = Item::withCount('purchase')
+                ->whereHas('likes', function ($query) {
+                    $query->where('user_id', auth()->id());
+                })
+                ->when($keyword, function ($query, $keyword) {
+                    $query->where('name', 'like', "%{$keyword}%")
+                          ->orwhere('description', 'like', "%{$keyword}%");
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } else {
+            // 全商品を取得（最新順）
+            // 購入数の多い順に並び替え、ログイン中ユーザーの商品は除外
+            $items = Item::withCount('purchase')
+                ->when(auth()->check(), function ($query) { // ログイン中の場合のみ
+                    $query->where('user_id', '<>', auth()->id());
+                })
+                ->when($keyword, function ($query, $keyword) { // keyword がある場合のみ
+                    $query->where(function($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%")
+                          ->orwhere('description', 'like', "%{$keyword}%");
+                    });
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+        // == ↑ 20251002 ↑ == //
 
         // ビューに渡す
         return view('items.index', compact('items'));
