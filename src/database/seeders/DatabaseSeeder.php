@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             ItemConditionSeeder::class,
             ItemSeeder::class,
             PaymentMethodSeeder::class,
-            CategoryItemSeeder::class, // 20251002
+            CategoryItemSeeder::class,
         ]);
     }
 }

@@ -22,44 +22,43 @@ class ItemController extends Controller
         $tab = request()->query('tab', 'recommend');
         $keyword = request()->query('keyword'); // 検索キーワード
 
-        // == ↓ 20251002 ↓ == //
-        // // 全商品を取得（最新順）
-        // // 購入数の多い順に並び替え、ログイン中ユーザーの商品は除外
-        // $items = Item::withCount('purchase')
-        //     ->when(auth()->check(), function ($query) {
-        //         $query->where('user_id', '<>', auth()->id());
-        //     })
-        //     ->orderBy('created_at', 'desc')
-        //     ->get();
+        // 商品情報を取得
+        // - 各商品の購入数も一緒に取得（Sold 表示用）
+        // - 検索キーワードがある場合は、商品名 or 商品説明に部分一致するもの
+        // - マイリストタブの場合は、ログインユーザのいいね商品のみ
+        // - それ以外は最新順で全商品（ログイン中なら自分の商品は除外）
+        // - 1ページ12件ずつ表示
+
+        // 商品情報を取得(全件)
+        // - 各商品の購入数も一緒に取得（Sold 表示用）
+        $itemsQuery = Item::withCount('purchase');
+
+        // 絞り込み１
+        // - ログイン中なら自分の出店商品以外のみ
+        // - マイリストタブの場合は、ログインユーザのいいね商品のみ
         if ($tab === 'mylist' && auth()->check()) {
-            // マイリスト表示: likes テーブルからログインユーザのいいね商品
-            $items = Item::withCount('purchase')
-                ->whereHas('likes', function ($query) {
-                    $query->where('user_id', auth()->id());
-                })
-                ->when($keyword, function ($query, $keyword) {
-                    $query->where('name', 'like', "%{$keyword}%")
-                          ->orwhere('description', 'like', "%{$keyword}%");
-                })
-                ->orderBy('created_at', 'desc')
-                ->get();
+            // マイリストのみを取得
+            $itemsQuery->whereHas('likes', function ($query) {
+                $query->where('user_id', auth()->id());
+            });
         } else {
-            // 全商品を取得（最新順）
-            // 購入数の多い順に並び替え、ログイン中ユーザーの商品は除外
-            $items = Item::withCount('purchase')
-                ->when(auth()->check(), function ($query) { // ログイン中の場合のみ
-                    $query->where('user_id', '<>', auth()->id());
-                })
-                ->when($keyword, function ($query, $keyword) { // keyword がある場合のみ
-                    $query->where(function($q) use ($keyword) {
-                        $q->where('name', 'like', "%{$keyword}%")
-                          ->orwhere('description', 'like', "%{$keyword}%");
-                    });
-                })
-                ->orderBy('created_at', 'desc')
-                ->get();
+            // 全商品を取得（ログイン中なら自分の商品は除外）
+            if (auth()->check()) {
+                $itemsQuery->where('user_id', '<>', auth()->id());
+            }
         }
-        // == ↑ 20251002 ↑ == //
+
+        // 絞り込み２
+        // 検索キーワードによる絞り込み
+        if ($keyword) {
+            $itemsQuery->where(function($q) use ($keyword) {
+                $q->where('name', 'like', "%{$keyword}%")
+                ->orWhere('description', 'like', "%{$keyword}%");
+                });
+        }
+
+        // 登録日の最新順（ページネーション付きで取得(12件ずつ)）
+        $items = $itemsQuery->orderBy('created_at', 'desc')->paginate(12);
 
         // ビューに渡す
         return view('items.index', compact('items'));
@@ -75,7 +74,7 @@ class ItemController extends Controller
             'categories',    // 中間テーブル category_item 経由
             'itemCondition', // 商品状態 (item_conditions テーブル)
             'comments.user', // コメントとユーザー情報
-            'purchase',      // 購入情報 // 20251002
+            'purchase',      // 購入情報
         ])->findOrFail($id);
 
         // ビューへ渡す
@@ -150,7 +149,7 @@ class ItemController extends Controller
             $item->categories()->sync($validated['categories']);
         }
 
-        return redirect()->route('mypage.index')->with('success', '商品を出品しました！');
+        return redirect()->route('mypage.index', ['page' => 'sell'])->with('success', '商品を出品しました！');
     }
 
 }

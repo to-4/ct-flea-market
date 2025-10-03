@@ -14,7 +14,9 @@ class PaymentMethodFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name'       => $this->faker->randomElement(['コンビニ支払い', 'カード払い']),
+            'is_active'  => true,
+            'sort_order' => $this->faker->numberBetween(1, 2),
         ];
     }
 }

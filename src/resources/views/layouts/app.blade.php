@@ -12,21 +12,16 @@
 <body>
     <header class="header">
         <div class="header__logo">
-            <!-- 20251002 -->
             <a href="{{ route('index') }}">
                 <img src="{{ asset('images/logo.svg') }}" alt="COACHTECH ロゴ" class="logo-img">
             </a>
-            <!-- 20251002 -->
         </div>
-        {{-- @if (Auth::check()) --}} <!-- 20251002 -->
-        @if (!Route::is('register', 'login')) <!-- 20251002 -->
+        @if (!Route::is('register', 'login'))
         <div class="header__search">
-            <!-- ↓ 20251002 ↓ -->
-             <form action="{{ route('index') }}" method="GET">
+            <form action="{{ route('index') }}" method="GET">
                 <input type="text" name="keyword" placeholder="なにをお探しですか？"
                         value="{{ request('keyword') }}">
             </form>
-            <!-- ↑ 20251002 ↑ -->
         </div>
         <nav class="header__nav">
             <ul>

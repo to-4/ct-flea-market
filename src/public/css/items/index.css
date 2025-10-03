@@ -57,8 +57,6 @@
     font-size: 14px;
 }
 
-/* ↓ 20251002 ↓ */
-
 /* aタグのデフォルト装飾を無効化 */
 .item-form {
     display: block;
@@ -80,8 +78,6 @@
     cursor: pointer;               /* カーソルをポインタに */
 }
 
-
-/* ↑ 20251002 ↑ */
 .item-button {
     display: block;
     background: none;

@@ -20,9 +20,6 @@
         <p class="item-price">¥{{ number_format($item->price) }} <span>(税込)</span></p>
 
         <div class="item-actions">
-            <!-- 20251002 -->
-            <!-- <span class="favorite">☆ {{ $item->favorites_count ?? 0 }}</span>
-            <span class="comments">💬 {{ $item->comments->count() }}</span> -->
             {{-- いいね --}}
             <form action="{{ route('items.toggle-like', $item->id) }}" method="post" class="like-form">
                 @csrf
@@ -37,18 +34,14 @@
                 <span class="icon">💬</span>
                 <span class="count">{{ $item->comments->count() }}</span>
             </div>
-            <!-- 20251002 -->
         </div>
 
-        <!-- 20251002 -->
         <!-- 下記は購入ページへのリンク -->
         @if ($item->purchase) {{-- purchase リレーションが存在するかどうか --}}
             <button class="btn-purchase sold-out" disabled>売り切れました</button>
         @else
             <a href="{{ route('purchase.index', $item->id) }}" class="btn-purchase">購入手続きへ</a>
         @endif
-        <!-- <a href="{{ route('purchase.index', $item->id) }}" class="btn-purchase">購入手続きへ</a> -->
-        <!-- 20251002 -->
 
         <div class="item-description">
             <h3>商品説明</h3>
@@ -69,7 +62,12 @@
             <h3>コメント ({{ $item->comments->count() }})</h3>
             @foreach($item->comments as $comment)
                 <div class="comment">
-                    <span class="comment-user">{{ $comment->user->name }}</span>
+                    <div class="comment-header">
+                        <div class="comment-user-image">
+                            <img src="{{ $comment->user->profile->image_url ?? '' }}" alt="ユーザー画像">
+                        </div>
+                        <span class="comment-user-name">{{ $comment->user->profile->display_name ?? $comment->user->name }}</span>
+                    </div>
                     <p class="comment-body">{{ $comment->body }}</p>
                 </div>
             @endforeach

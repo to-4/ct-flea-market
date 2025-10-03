@@ -2,6 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Item;
+use App\Models\User;
+use App\Models\PaymentMethod;
+use App\Models\Address;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PurchaseFactory extends Factory
@@ -14,7 +18,10 @@ class PurchaseFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'item_id'             => Item::factory(),
+            'user_id'             => User::factory(),
+            'payment_method_id'   => PaymentMethod::factory(),
+            'shipping_address_id' => Address::factory(),
         ];
     }
 }

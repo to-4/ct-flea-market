@@ -14,7 +14,9 @@ class ItemConditionFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name'       => $this->faker->word(),
+            'is_active'  => true,
+            'sort_order' => $this->faker->numberBetween(1, 10),
         ];
     }
 }
