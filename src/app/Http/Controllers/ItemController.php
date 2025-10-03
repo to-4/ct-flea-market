@@ -34,17 +34,22 @@ class ItemController extends Controller
         $itemsQuery = Item::withCount('purchase');
 
         // 絞り込み１
-        // - ログイン中なら自分の出店商品以外のみ
-        // - マイリストタブの場合は、ログインユーザのいいね商品のみ
-        if ($tab === 'mylist' && auth()->check()) {
-            // マイリストのみを取得
-            $itemsQuery->whereHas('likes', function ($query) {
-                $query->where('user_id', auth()->id());
-            });
+        // - マイリストタブの場合
+        //   - ログイン中：ユーザのいいね商品のみ
+        //   - ログインしていない：0件とする
+        // - マイリストタブ以外の場合、ログイン中なら自分の出店商品以外のみ
+        if ($tab === 'mylist') {
+            if (!Auth::check()) {
+                $itemsQuery->whereRaw('0 = 1');
+            }
+            else {
+                $itemsQuery->whereHas('likes', function ($query) {
+                    $query->where('user_id', Auth::id());
+                });
+            }
         } else {
-            // 全商品を取得（ログイン中なら自分の商品は除外）
-            if (auth()->check()) {
-                $itemsQuery->where('user_id', '<>', auth()->id());
+            if (Auth::check()) {
+                $itemsQuery->where('user_id', '<>', Auth::id());
             }
         }
 

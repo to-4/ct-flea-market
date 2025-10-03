@@ -13,36 +13,32 @@
             class="tab-link {{ request('tab') !== 'mylist' ? 'active' : '' }}">
             おすすめ
         </a>
-        @auth
-            {{-- ログインしている場合は有効なリンク --}}
-            <a href="{{ route('index', ['tab' => 'mylist']) }}"
-                class="tab-link {{ request('tab') === 'mylist' ? 'active' : '' }}">
+        <a href="{{ route('index', ['tab' => 'mylist']) }}"
+            class="tab-link {{ request('tab') === 'mylist' ? 'active' : '' }}">
             マイリスト
-            </a>
-        @else
-            {{-- ログインしていない場合はリンクを無効化 --}}
-            <span class="tab-link disabled">マイリスト</span>
-        @endauth
+        </a>
     </div>
 
-    <div class="items-grid">
-        @forelse($items as $item)
-            <div class="item-card">
-                <a href="{{ route('items.show', $item->id) }}" class="item-form">
-                    <div class="item-image">
-                        @if($item->purchase_count > 0)
-                            <div class="soldout-ribbon">Sold</div>
-                        @endif
-                        <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
-                    </div>
-                    <div class="item-name">{{ $item->name }}</div>
-                </a>
-            </div>
-        @empty
-            <p>マイリストに商品はありません</p>
-        @endforelse
-    </div>
-
+    @if ($items->isEmpty())
+        <p class="no-items-message">表示する商品がありません。</p>
+    @else
+        <div class="items-grid">
+            @foreach($items as $item)
+                <div class="item-card">
+                    <a href="{{ route('items.show', $item->id) }}" class="item-form">
+                        <div class="item-image">
+                            @if($item->purchase_count > 0)
+                                <div class="soldout-ribbon">Sold</div>
+                            @endif
+                            <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
+                        </div>
+                        <div class="item-name">{{ $item->name }}</div>
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    @endif
+    
     {{-- ページネーション --}}
     @if ($items->hasPages())
         <div class="pagination-container">
