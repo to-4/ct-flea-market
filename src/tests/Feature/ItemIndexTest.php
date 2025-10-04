@@ -12,7 +12,6 @@ use Tests\TestCase;
 
 class ItemIndexTest extends TestCase
 {
-
     use RefreshDatabase;
 
     #[Test]
@@ -71,13 +70,13 @@ class ItemIndexTest extends TestCase
         // 2. ユーザーAが出品した商品
         $itemByA = Item::factory()->create([
             'user_id' => $userA->id,
-            'name' => 'ユーザーAの商品',
+            'name'    => 'ユーザーAの商品',
         ]);
 
         // 3. ユーザーBが出品した商品
         $itemByB = Item::factory()->create([
             'user_id' => $userB->id,
-            'name' => 'ユーザーBの商品',
+            'name'    => 'ユーザーBの商品',
         ]);
 
         // 4. ユーザーAでログイン (認証状態にする)

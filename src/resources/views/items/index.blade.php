@@ -9,11 +9,11 @@
 @section('content')
 <div class="items-container">
     <div class="items-tabs">
-        <a href="{{ route('index') }}"
+        <a href="{{ route('index', array_merge(request()->only('keyword'), ['tab' => null])) }}"
             class="tab-link {{ request('tab') !== 'mylist' ? 'active' : '' }}">
             おすすめ
         </a>
-        <a href="{{ route('index', ['tab' => 'mylist']) }}"
+        <a href="{{ route('index', array_merge(request()->only('keyword'), ['tab' => 'mylist'])) }}"
             class="tab-link {{ request('tab') === 'mylist' ? 'active' : '' }}">
             マイリスト
         </a>
@@ -42,7 +42,7 @@
     {{-- ページネーション --}}
     @if ($items->hasPages())
         <div class="pagination-container">
-            {{ $items->links('pagination::bootstrap-5') }}
+            {{ $items->appends(request()->only('keyword', 'tab'))->links('pagination::bootstrap-5') }}
         </div>
     @endif
 </div>
