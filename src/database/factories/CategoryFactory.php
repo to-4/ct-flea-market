@@ -14,7 +14,8 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name'       => $this->faker->name(),                // プロフィール名
+            'sort_order' => $this->faker->numberBetween(1, 100), // ソート順
         ];
     }
 }

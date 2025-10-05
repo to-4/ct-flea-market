@@ -17,7 +17,7 @@ class CreateItemsTable extends Migration
             $table->id();
             $table->string('name')->comment('商品名');
             $table->integer('price')->comment('料金');
-            $table->string('bland_name')->nullable()->comment('メーカー名');
+            $table->string('brand_name')->nullable()->comment('メーカー名');
             $table->text('description')->comment('説明');
             $table->string('image_url')->comment('画像パス');
             $table->foreignId('user_id')->comment('ユーザーID')

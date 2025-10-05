@@ -85,9 +85,9 @@
             </div>
 
             <div class="form-group">
-                <label for="bland_name">ブランド名</label>
-                <input type="text" name="bland_name" id="bland_name" value="{{ old('bland_name') }}">
-                @error('bland_name')
+                <label for="brand_name">ブランド名</label>
+                <input type="text" name="brand_name" id="brand_name" value="{{ old('brand_name') }}">
+                @error('brand_name')
                     <p class="error-message">{{ $message }}</p>
                 @enderror
             </div>

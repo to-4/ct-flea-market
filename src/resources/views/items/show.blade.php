@@ -16,7 +16,7 @@
 
     <div class="item-detail-right">
         <h2 class="item-name">{{ $item->name }}</h2>
-        <p class="item-brand">{{ $item->brand_name }}</p>
+        <p class="item-brand">{{ $item->brand_name ?? 'ブランド名未登録'}}</p>
         <p class="item-price">¥{{ number_format($item->price) }} <span>(税込)</span></p>
 
         <div class="item-actions">

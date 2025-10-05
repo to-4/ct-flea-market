@@ -35,7 +35,7 @@ class StoreItemRequest extends FormRequest
             'name' => ['required', 'max:120'],
 
             // ブランド名
-            'bland_name' => ['required', 'max:120'],
+            'brand_name' => ['required', 'max:120'],
 
             // 商品の説明
             'description' => ['required'],
@@ -59,8 +59,8 @@ class StoreItemRequest extends FormRequest
             'name.required' => '商品名を入力してください',
             'name.max'      => '商品名は 120 文字以内で入力してください',
 
-            'bland_name.required' => 'ブランド名を入力してください',
-            'bland_name.max'      => 'ブランド名は 120 文字以内で入力してください',
+            'brand_name.required' => 'ブランド名を入力してください',
+            'brand_name.max'      => 'ブランド名は 120 文字以内で入力してください',
 
             'description.required' => '商品の説明を入力してください',
 

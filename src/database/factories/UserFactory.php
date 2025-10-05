@@ -23,6 +23,17 @@ class UserFactory extends Factory
         ];
     }
 
+
+    // Profile付きのユーザーを作成する状態
+    public function withProfile(?string $displayName = null): static
+    {
+        return $this->has(
+            \App\Models\Profile::factory()->state([
+                'display_name' => $displayName ?? $this->faker->name(),
+            ])
+        );
+    }
+
     /**
      * Indicate that the model's email address should be unverified.
      *

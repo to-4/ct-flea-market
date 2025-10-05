@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property INT $price
  *     料金
  *
- * @property VARCHAR(255)|null $bland_name
+ * @property VARCHAR(255)|null $brand_name
  *     メーカー名
  *
  * @property TEXT $description
@@ -52,7 +52,7 @@ class Item extends Model
     protected $fillable = [
         'name',
         'price',
-        'bland_name',
+        'brand_name',
         'description',
         'image_url',
         'user_id',

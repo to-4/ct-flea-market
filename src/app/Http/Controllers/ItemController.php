@@ -141,7 +141,7 @@ class ItemController extends Controller
         // Item 登録
         $item = Item::create([
             'name'              => $validated['name'],
-            'bland_name'        => $validated['bland_name'] ?? null,
+            'brand_name'        => $validated['brand_name'] ?? null,
             'description'       => $validated['description'] ?? null,
             'price'             => $validated['price'],
             'item_condition_id' => $validated['item_condition_id'],
