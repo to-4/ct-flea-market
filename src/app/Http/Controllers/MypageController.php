@@ -31,24 +31,18 @@ class MypageController extends Controller
 
         if ($page === 'sell') {
             // 出品した商品一覧（自分が出品者）
-            // == ↓ 20251002 ↓ == //
-            // $items = Item::where('user_id', $user->id)
-            //              ->orderBy('created_at', 'desc')
-            //              ->get();
             $items = Item::withCount('purchase')
-                         ->where('user_id', $user->id)
-                         ->orderBy('created_at', 'desc')
-                         ->get();
-            // == ↑ 20251002 ↑ == //
+                        ->where('user_id', $user->id)
+                        ->orderBy('created_at', 'desc')
+                        ->get();
         } else {
             // 購入した商品一覧（Purchase 経由で取得）
-            // == ↓ 20251002 ↓ == //
             $items = $user->purchases()
-                          ->with('item') // Purchase モデルに item() リレーションがある前提
+                          ->with('item')                          // Purchase モデルに item() リレーションがある前提
                           ->latest()
-                          ->get() // ユーザー購入履歴（商品データ付き）
-                          ->map(fn($purchase) => $purchase->item); // 商品データのみ抽出
-            // == ↑ 20251002 ↑ == //
+                          ->get()                                 // ユーザー購入履歴（商品データ付き）
+                          ->map(fn($purchase) => $purchase->item) // 商品データのみ抽出
+                          ->filter(fn($v) => !is_null($v));       // null を除外
         }
 
         return view('mypages.index', compact('user', 'items', 'profile', 'page'));

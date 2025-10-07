@@ -30,7 +30,7 @@
                             @if($item->purchase_count > 0)
                                 <div class="soldout-ribbon">Sold</div>
                             @endif
-                            <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
+                            <img src="{{ $item->image_url ?: asset('images/no-image.png') }}" alt="{{ $item->name }}">
                         </div>
                         <div class="item-name">{{ $item->name }}</div>
                     </a>

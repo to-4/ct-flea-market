@@ -45,8 +45,8 @@
     <main class="main-content">
 
         {{-- フラッシュメッセージ（任意） --}}
-        @if(session('status'))
-            <div class="flash flash-success">{{ session('status') }}</div>
+        @if(session('success'))
+            <div class="flash flash-success">{{ session('success') }}</div>
         @endif
 
         @yield('content')

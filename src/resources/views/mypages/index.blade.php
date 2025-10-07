@@ -11,10 +11,10 @@
     {{-- プロフィール情報 --}}
     <div class="profile-section">
         <div class="profile-image">
-            <img src="{{ $profile->image_url ? $profile->image_url : '' }}" alt="プロフィール画像">
+            <img src="{{ $profile?->image_url ?: asset('images/no-image.png') }}" alt="プロフィール画像">
         </div>
         <div class="profile-info">
-            <h2 class="profile-name">{{ $profile->display_name ?? $user->name }}</h2>
+            <h2 class="profile-name">{{ $profile?->display_name ?: $user->name }}</h2>
             <a href="{{ route('mypage.edit') }}" class="btn-edit">プロフィールを編集</a>
         </div>
     </div>
@@ -29,15 +29,15 @@
     <div class="items-grid">
         @forelse($items as $item)
             <div class="item-card">
-                <a href="{{ route('items.show', $item->id) }}" class="item-form"> <!-- 20251002 -->
+                <a href="{{ route('items.show', $item->id) }}" class="item-form">
                     <div class="item-image">
-                        @if($item->purchase_count > 0)             <!-- 20251002 -->
-                            <div class="soldout-ribbon">Sold</div> <!-- 20251002 -->
-                        @endif                                     <!-- 20251002 -->
-                        <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
+                        @if($item->purchase_count > 0)
+                            <div class="soldout-ribbon">Sold</div>
+                        @endif
+                        <img src="{{ $item?->image_url ?: asset('images/no-image.png') }}" alt="{{ $item->name }}">
                     </div>
                     <div class="item-name">{{ $item->name }}</div>
-                </a> <!-- 20251002 -->
+                </a>
             </div>
         @empty
             <p class="no-items">商品がありません</p>

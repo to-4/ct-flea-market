@@ -28,5 +28,7 @@
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
         <server name="TELESCOPE_ENABLED" value="false"/>
+        <env name="DUSK_DRIVER" value="chrome"/> <!-- ブラウザテスト用 -->
+        <env name="DUSK_HEADLESS" value="true"/> <!-- ブラウザテスト用 -->
     </php>
 </phpunit>

@@ -18,9 +18,9 @@
         <div class="profile-image-section">
             <div class="profile-image">
                 <img id="profile_preview"
-                    src="{{ optional($profile)->image_url ? $profile->image_url : '' }}"
+                    src="{{ $profile?->image_url ?: '' }}"
                     alt="プロフィール画像"
-                    style="{{ optional($profile)->image_url ? '' : 'display:none;' }}">
+                    style="{{ $profile?->image_url ?: 'display:none;' }}">
             </div>
             <label class="btn-image-upload">
                 画像を選択する
