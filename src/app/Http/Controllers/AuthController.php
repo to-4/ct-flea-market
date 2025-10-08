@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -25,6 +26,14 @@ class AuthController extends Controller
         // remember チェックボックスがあれば第二引数で制御
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
+
+            $user = Auth::user();
+
+            if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail()) {
+                // 一旦ログインは成立させつつ、認証誘導ページへリダイレクト
+                return redirect()->route('verification.notice');
+            }
+
             return redirect()->intended(route('index')); // 成功 → 管理画面へ
         }
 
@@ -55,8 +64,14 @@ class AuthController extends Controller
         // そのままログインさせたい場合
         Auth::login($user);
 
+        // 認証リンクメール送信
+        event(new Registered($user));
+
         // プロフィール設定へ
-        return redirect()->intended(route('mypage.edit'));
+        // return redirect()->intended(route('mypage.edit'));
+
+        // メール認証誘導画面
+        return redirect()->route('verification.notice');
     }
 
     public function destroy(Request $request)

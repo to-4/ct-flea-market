@@ -1,1 +1,9 @@
 app()->bound(\Laravel\Fortify\Contracts\LoginViewResponse::class)
+$user = App\Models\User::first();
+$user instanceof Illuminate\Contracts\Auth\MustVerifyEmail;
+$user = App\Models\User::first();
+$user->sendEmailVerificationNotification();
+$user
+$user->sendEmailVerificationNotification();
+$user = App\Models\User::first();
+$user->sendEmailVerificationNotification();

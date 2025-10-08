@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PurchaseController;
@@ -18,9 +20,14 @@ use App\Http\Controllers\CommentController;
 |
 */
 
+// ログイン済み
 Route::middleware(['auth'])->group(function () {
     // ログアウト処理
     Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
+});
+
+// ログイン済みかつメール認証済み
+Route::middleware(['auth', 'verified'])->group(function () {
     // 購入画面
     Route::get('purchase/{item_id}', [PurchaseController::class, 'index'])->name('purchase.index');
     // 購入実行
@@ -62,3 +69,22 @@ Route::middleware('guest')->group(function () {
 // 共通でアクセスできるルート
 Route::get('/', [ItemController::class, 'index'])->name('index');
 Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.show');
+
+// メール認証用ルート
+// 認証メール送信後の画面（例：認証待ち）
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+// メールのリンクをクリックしたとき
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect()->route('mypage.edit')
+                     ->with('success', 'メール認証が完了しました！');;
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+// 再送用
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('success', '認証メールを再送しました。');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');

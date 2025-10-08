@@ -3,7 +3,7 @@
 @section('title', 'ログイン')
 
 @push('page-css')
-<link rel="stylesheet" href="{{ asset('css/login.css') }}">
+<link rel="stylesheet" href="{{ asset('css/auth/login.css') }}">
 @endpush
 
 @section('content')
@@ -15,7 +15,8 @@
 
         <div class="form-group">
             <label for="email">メールアドレス</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" required
+                    value = "{{ old('email') }}">
             @error('email')
                 <p class="error-message">{{ $message }}</p>
             @enderror

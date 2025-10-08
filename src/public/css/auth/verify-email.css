@@ -1,0 +1,60 @@
+/* verify-email.css */
+
+.verify-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    background-color: #fff;
+}
+
+.verify-card {
+    text-align: center;
+    background-color: #fff;
+    padding: 40px 60px;
+    border-radius: 8px;
+}
+
+.verify-message {
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+
+/* メインボタン */
+.btn-verify {
+    display: inline-block;
+    background-color: #555;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-verify:hover {
+    background-color: #333;
+}
+
+/* 再送ボタン */
+.resend-form {
+    margin-top: 16px;
+}
+
+.btn-resend {
+    background: none;
+    border: none;
+    color: #007BFF;
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.btn-resend:hover {
+    color: #0056b3;
+}

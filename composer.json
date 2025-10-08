@@ -1,0 +1,10 @@
+{
+    "require-dev": {
+        "laravel/dusk": "^2.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
+    }
+}
