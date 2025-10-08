@@ -38,7 +38,7 @@
             @endforeach
         </div>
     @endif
-    
+
     {{-- ページネーション --}}
     @if ($items->hasPages())
         <div class="pagination-container">

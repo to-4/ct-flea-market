@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -8,6 +10,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\CommentController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -88,3 +91,38 @@ Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
     return back()->with('success', '認証メールを再送しました。');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+// メール認証画面
+Route::get('/email/verify-code', function () {
+    return view('auth.verify-code');
+})->name('verification.code.notice');
+
+// 認証コード検証
+Route::post('/email/verify-code', [AuthController::class, 'verifyCode'])
+    ->name('verification.code.check');
+
+// 認証コード再送用
+Route::post('/email/verification-code/resend', function () {
+    $user = Auth::user();
+
+    if (! $user) {
+        abort(403);
+    }
+
+    // 6桁の新しい認証コードを生成
+    $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+
+    // DBに保存（期限は10分）
+    $user->update([
+        'email_verification_code' => $code,
+        'email_verification_expires_at' => now()->addMinutes(10),
+    ]);
+
+    // メール送信（MailHog で確認可能）
+    Mail::raw("新しい認証コード: {$code}\n\n有効期限: 10分", function ($message) use ($user) {
+        $message->to($user->email)
+                ->subject('【Flea Market】メール認証コード再送');
+    });
+
+    return back()->with('success', '新しい認証コードを送信しました。');
+})->middleware(['auth', 'throttle:3,10'])->name('verification.code.resend');

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -30,6 +31,23 @@ class AuthController extends Controller
             $user = Auth::user();
 
             if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail()) {
+
+                // 認証コードを生成（6桁・ゼロ埋め）
+                $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+
+                // コードと有効期限を保存（例: 10分間）
+                $user->update([
+                    'email_verification_code' => $code,
+                    'email_verification_expires_at' => now()->addMinutes(10),
+                ]);
+
+                // メール送信（MailHogで確認可）
+                Mail::raw("以下の6桁コードを入力して認証してください：\n\n{$code}\n\n有効期限：10分", function ($message) use ($user) {
+                    $message->from('no-reply@example.com', 'Flea Market 運営');
+                    $message->to($user->email)
+                            ->subject('【Flea Market】メール認証コード');
+                });
+
                 // 一旦ログインは成立させつつ、認証誘導ページへリダイレクト
                 return redirect()->route('verification.notice');
             }
@@ -64,14 +82,45 @@ class AuthController extends Controller
         // そのままログインさせたい場合
         Auth::login($user);
 
-        // 認証リンクメール送信
-        event(new Registered($user));
+        // 認証コードを生成（6桁・ゼロ埋め）
+        $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
-        // プロフィール設定へ
-        // return redirect()->intended(route('mypage.edit'));
+        // コードと有効期限を保存（例: 10分間）
+        $user->update([
+            'email_verification_code' => $code,
+            'email_verification_expires_at' => now()->addMinutes(10),
+        ]);
+
+        // メール送信（MailHogで確認可）
+        Mail::raw("以下の6桁コードを入力して認証してください：\n\n{$code}\n\n有効期限：10分", function ($message) use ($user) {
+            $message->from('no-reply@example.com', 'Flea Market 運営');
+            $message->to($user->email)
+                    ->subject('【Flea Market】メール認証コード');
+        });
 
         // メール認証誘導画面
         return redirect()->route('verification.notice');
+    }
+
+    public function verifyCode(Request $request)
+    {
+        $request->validate(['code' => 'required|digits:6']);
+
+        $user = Auth::user();
+
+        if (! $user ||
+            $user->email_verification_code !== $request->code ||
+            $user->email_verification_expires_at->isPast()) {
+            return back()->withErrors(['code' => '認証コードが無効か、期限切れです。']);
+        }
+
+        $user->forceFill([
+            'email_verified_at' => now(),
+            'email_verification_code' => null,
+            'email_verification_expires_at' => null,
+        ])->save();
+
+        return redirect()->route('mypage.edit')->with('success', 'メール認証が完了しました！');
     }
 
     public function destroy(Request $request)

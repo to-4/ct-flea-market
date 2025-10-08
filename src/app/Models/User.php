@@ -21,6 +21,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'email_verification_code',       // 追加(メール認証用コード)
+        'email_verification_expires_at', // 追加(メール認証期限)
     ];
 
     /**
@@ -40,6 +42,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'email_verification_expires_at' => 'datetime', // 追加（メール認証期限）
     ];
 
     // リレーションメソッド
