@@ -23,6 +23,11 @@ use App\Http\Controllers\CommentController;
 |
 */
 
+// StripeのリダイレクトURL
+// ユーザーセッション情報は失われている可能性が高いため（別ドメイン遷移）
+Route::get('/purchase/success', [PurchaseController::class, 'success'])->name('purchase.success');
+Route::get('/purchase/cancel',  [PurchaseController::class, 'cancel'])->name('purchase.cancel');
+
 // ログイン済み
 Route::middleware(['auth'])->group(function () {
     // ログアウト処理
@@ -34,7 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // 購入画面
     Route::get('purchase/{item_id}', [PurchaseController::class, 'index'])->name('purchase.index');
     // 購入実行
-    Route::post('purchase', [PurchaseController::class, 'store'])->name('purchase.store');
+    Route::post('purchase/', [PurchaseController::class, 'store'])->name('purchase.store');
     // 購入支払い先変更画面
     Route::get('purchase/address/{item_id}', [PurchaseController::class, 'edit'])->name('purchase.edit');
     // 購入支払い先変更実行
@@ -83,7 +88,7 @@ Route::get('/email/verify', function () {
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
     return redirect()->route('mypage.edit')
-                     ->with('success', 'メール認証が完了しました！');;
+        ->with('success', 'メール認証が完了しました！');;
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 // 再送用
@@ -121,7 +126,7 @@ Route::post('/email/verification-code/resend', function () {
     // メール送信（MailHog で確認可能）
     Mail::raw("新しい認証コード: {$code}\n\n有効期限: 10分", function ($message) use ($user) {
         $message->to($user->email)
-                ->subject('【Flea Market】メール認証コード再送');
+            ->subject('【Flea Market】メール認証コード再送');
     });
 
     return back()->with('success', '新しい認証コードを送信しました。');

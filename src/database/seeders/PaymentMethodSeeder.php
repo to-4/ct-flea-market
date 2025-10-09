@@ -16,11 +16,13 @@ class PaymentMethodSeeder extends Seeder
         // 指定2件
         $contents = [
             [
+                'id' => PaymentMethod::CODE_KONBINI,
                 'name' => 'コンビニ支払い',
                 'sort_order' => 1,
                 'is_active' => true,
             ],
             [
+                'id' => PaymentMethod::CODE_CARD,
                 'name' => 'カード支払い',
                 'sort_order' => 2,
                 'is_active' => true,

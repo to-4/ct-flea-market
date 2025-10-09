@@ -37,6 +37,18 @@ class PaymentMethod extends Model
 {
     use HasFactory;
 
+    /**
+     * 支払いID：コンビニ払い
+     * ※1. シーディングや Stripe サービスでも使用
+     * ※2. Stripe の payment_method_type でも、'konbini' なのでそれに倣う
+     */
+    public const CODE_KONBINI = 1;
+    /**
+     * 支払いID：カード払い
+     * ※ シーディングや Stripe サービスでも使用
+     */
+    public const CODE_CARD    = 2;
+
     protected $fillable = [
         'name',
         'sort_order',

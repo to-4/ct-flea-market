@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Profile;
 use App\Models\Address;
 use App\Http\Requests\StoreAddressRequest;
+use App\Services\PaymentService;
 use Illuminate\Support\Facades\Auth;
 
 class PurchaseController extends Controller
@@ -52,7 +53,7 @@ class PurchaseController extends Controller
     /**
      * 購入処理を実行
      */
-    public function store(Request $request)
+    public function store(Request $request, PaymentService $paymentService)
     {
         $request->validate([
             'payment_method_id' => 'required|exists:payment_methods,id',
@@ -60,23 +61,19 @@ class PurchaseController extends Controller
 
         $item = Item::findOrFail($request->input('item_id'));
         $addressId = $request->input('address_id');
+        $methodId  = $request->input('payment_method_id');
 
         // すでに購入済みならリダイレクト
         if ($item->purchase) {
             return redirect()->route('items.show', $item->id)
-                             ->with('error', 'この商品はすでに購入されています。');
+                ->with('error', 'この商品はすでに購入されています。');
         }
 
-        // 購入情報を登録
-        $purchase = Purchase::create([
-            'user_id'             => Auth::id(),
-            'item_id'             => $item->id,
-            'payment_method_id'   => $request->payment_method_id,
-            'shipping_address_id' => $addressId,
-        ]);
+        // Stripe へ決済セッション作成（リダイレクトURLを受け取る）
+        $url = $paymentService->createPaymentSession($item, $methodId, $addressId);
 
-        return redirect()->route('mypage.index', ['page' => 'buy'])
-                         ->with('success', '購入が完了しました！');
+        // 外部URL（外部ドメイン）にリダイレクト
+        return redirect()->away($url);
     }
 
     /**
@@ -107,6 +104,41 @@ class PurchaseController extends Controller
         $address->save();
 
         return redirect()->route('purchase.index', ['item_id' => $item_id, 'address_id' => $address->id])
-                         ->with('success', '住所が更新されました。');
+            ->with('success', '住所が更新されました。');
+    }
+
+    public function success(Request $request)
+    {
+
+        $sessionId = $request->query('session_id');
+        if (!$sessionId) {
+            return redirect()->route('mypage.index')->with('error', 'セッション情報がありません。');
+        }
+
+        // Stripe APIキーを設定（最初に必須）
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
+        $session = \Stripe\Checkout\Session::retrieve($sessionId);
+        $itemId    = $session->metadata->item_id;
+        $userId    = $session->metadata->user_id;
+        $methodId  = $session->metadata->method_id;
+        $addressId = $session->metadata->address_id;
+
+        Purchase::create([
+            'user_id'             => $userId,
+            'item_id'             => $itemId,
+            'payment_method_id'   => $methodId,
+            'shipping_address_id' => $addressId,
+        ]);
+
+        return redirect()->route('mypage.index', ['page' => 'buy'])
+            ->with('success', '購入が完了しました！');
+    }
+
+    public function cancel(Request $request)
+    {
+
+        return redirect()->route('mypage.index')
+            ->with('error', '決済がキャンセルされました。');
     }
 }
