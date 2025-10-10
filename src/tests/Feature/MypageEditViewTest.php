@@ -2,11 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use App\Models\Profile;
 use App\Models\Address;
+use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class MypageEditViewTest extends TestCase
@@ -32,10 +31,10 @@ class MypageEditViewTest extends TestCase
 
         // 3. プロフィールを生成
         $profile = Profile::factory()->create([
-            'user_id'     => $user->id,
-            'display_name'=> 'テスト太郎',
-            'image_url'   => 'https://example.com/profile.jpg',
-            'address_id'  => $address->id,
+            'user_id'      => $user->id,
+            'display_name' => 'テスト太郎',
+            'image_url'    => 'https://example.com/profile.jpg',
+            'address_id'   => $address->id,
         ]);
 
         // 4. ログイン状態を再現

@@ -157,6 +157,6 @@ class RegisterTest extends TestCase
         ]);
 
         // 4. プロフィール設定画面にリダイレクトされたか確認
-        $response->assertRedirect('/mypage/profile');
+        $response->assertRedirect('/email/verify');
     }
 }

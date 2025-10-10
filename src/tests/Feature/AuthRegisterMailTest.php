@@ -2,15 +2,10 @@
 
 namespace Tests\Feature;
 
-
 use App\Models\User;
-use App\Mail\VerificationCodeMail;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Mail\SentMessage;
-use Tests\TestCase;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AuthRegisterMailTest extends TestCase
 {
@@ -22,8 +17,8 @@ class AuthRegisterMailTest extends TestCase
 
         // 1. ユーザー登録データを準備
         $formData = [
-            'name'     => 'テストユーザー',
-            'email'    => 'test@example.com',
+            'name' => 'テストユーザー',
+            'email' => 'test@example.com',
             'password' => 'password123',
             'password_confirmation' => 'password123',
         ];
@@ -41,7 +36,6 @@ class AuthRegisterMailTest extends TestCase
         // 5. 有効期限やコード保存の確認
         $this->assertNotNull($user->email_verification_code);
         $this->assertNotNull($user->email_verification_expires_at);
-
 
         // MailHog を Docker で動かしている場合、
         // テスト中に送られたメールは

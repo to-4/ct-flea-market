@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Item;
-use App\Models\Category;
-use App\Models\ItemCondition;
 use App\Http\Requests\StoreItemRequest;
+use App\Models\Category;
+use App\Models\Item;
+use App\Models\ItemCondition;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
-
     /**
      * 商品一覧表示
      */
@@ -39,10 +37,9 @@ class ItemController extends Controller
         //   - ログインしていない：0件とする
         // - マイリストタブ以外の場合、ログイン中なら自分の出店商品以外のみ
         if ($tab === 'mylist') {
-            if (!Auth::check()) {
+            if (! Auth::check()) {
                 $itemsQuery->whereRaw('0 = 1');
-            }
-            else {
+            } else {
                 $itemsQuery->whereHas('likes', function ($query) {
                     $query->where('user_id', Auth::id());
                 });
@@ -56,10 +53,10 @@ class ItemController extends Controller
         // 絞り込み２
         // 検索キーワードによる絞り込み
         if ($keyword) {
-            $itemsQuery->where(function($q) use ($keyword) {
+            $itemsQuery->where(function ($q) use ($keyword) {
                 $q->where('name', 'like', "%{$keyword}%")
-                ->orWhere('description', 'like', "%{$keyword}%");
-                });
+                    ->orWhere('description', 'like', "%{$keyword}%");
+            });
         }
 
         // 登録日の最新順（ページネーション付きで取得(12件ずつ)）
@@ -150,11 +147,10 @@ class ItemController extends Controller
         ]);
 
         // カテゴリ紐付け
-        if (!empty($validated['categories'])) {
+        if (! empty($validated['categories'])) {
             $item->categories()->sync($validated['categories']);
         }
 
         return redirect()->route('mypage.index', ['page' => 'sell'])->with('success', '商品を出品しました！');
     }
-
 }

@@ -2,30 +2,28 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use App\Models\Item;
 use App\Models\Category;
+use App\Models\Comment;
+use App\Models\Item;
 use App\Models\ItemCondition;
 use App\Models\Like;
-use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ItemShowTest extends TestCase
 {
-
     use RefreshDatabase;
 
     #[Test]
     public function it_displays_all_required_information_on_item_detail_page(): void
     {
         // 1. 準備：関連データを作成
-        $user      = User::factory()         ->create(['name' => '太郎']);
-        $category  = Category::factory()     ->create(['name' => 'バッグ']);
+        $user      = User::         factory()->create(['name' => '太郎']);
+        $category  = Category::     factory()->create(['name' => 'バッグ']);
         $condition = ItemCondition::factory()->create(['name' => '新品']);
-        $item      = Item::factory()         ->create([
+        $item      = Item::         factory()->create([
             'name'              => 'トートバッグ',
             'brand_name'        => 'COACH',
             'price'             => 12800,
@@ -77,7 +75,7 @@ class ItemShowTest extends TestCase
     public function it_displays_multiple_categories_on_item_detail_page(): void
     {
         // 1. 準備：関連データを作成
-        $user      = User::factory()->create(['name' => '太郎']);
+        $user      = User::         factory()->create(['name' => '太郎']);
         $condition = ItemCondition::factory()->create(['name' => '新品']);
 
         // 商品作成

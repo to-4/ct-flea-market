@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-
     public function login()
     {
         return view('auth.login');
@@ -45,7 +43,7 @@ class AuthController extends Controller
                 Mail::raw("以下の6桁コードを入力して認証してください：\n\n{$code}\n\n有効期限：10分", function ($message) use ($user) {
                     $message->from('no-reply@example.com', 'Flea Market 運営');
                     $message->to($user->email)
-                            ->subject('【Flea Market】メール認証コード');
+                        ->subject('【Flea Market】メール認証コード');
                 });
 
                 // 一旦ログインは成立させつつ、認証誘導ページへリダイレクト
@@ -95,7 +93,7 @@ class AuthController extends Controller
         Mail::raw("以下の6桁コードを入力して認証してください：\n\n{$code}\n\n有効期限：10分", function ($message) use ($user) {
             $message->from('no-reply@example.com', 'Flea Market 運営');
             $message->to($user->email)
-                    ->subject('【Flea Market】メール認証コード');
+                ->subject('【Flea Market】メール認証コード');
         });
 
         // メール認証誘導画面
@@ -128,7 +126,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->route('login');
     }
-
 }

@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class UserSeeder extends Seeder
 {
@@ -17,10 +17,10 @@ class UserSeeder extends Seeder
     {
         // ダミーユーザー
         $user = [
-            'name' => 'admin',
-            'email' => 'aaa@example.com',
+            'name'     => 'admin',
+            'email'    => 'aaa@example.com',
             'password' => Hash::make('pass'), // ←ここでハッシュ化
-            ];
+        ];
         User::create($user);
     }
 }

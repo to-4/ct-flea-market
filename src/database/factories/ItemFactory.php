@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\User;
 use App\Models\ItemCondition;
-
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ItemFactory extends Factory
 {
@@ -24,10 +23,10 @@ class ItemFactory extends Factory
             'user_id'           => User::factory(),                         // ユーザーID（リレーション）
             'item_condition_id' => ItemCondition::factory(),                // 状態ID（リレーション）
             'image_url'         => $this->faker->imageUrl(                  // 画像パス
-                                                    640,        // 画像の幅(px)
-                                                    480,        // 画像の高さ(px)
-                                                    'products', // 画像カテゴリ
-                                                    true),      // ランダムな画像を毎回取得
+                640,        // 画像の幅(px)
+                480,        // 画像の高さ(px)
+                'products', // 画像カテゴリ
+                true),      // ランダムな画像を毎回取得
         ];
     }
 }

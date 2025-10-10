@@ -1,16 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ItemController;
-use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\MypageController;
 use App\Http\Controllers\CommentController;
-
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\MypageController;
+use App\Http\Controllers\PurchaseController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,10 +22,12 @@ use App\Http\Controllers\CommentController;
 |
 */
 
-// StripeのリダイレクトURL
+// Stripe のリダイレクト URL
 // ユーザーセッション情報は失われている可能性が高いため（別ドメイン遷移）
-Route::get('/purchase/success', [PurchaseController::class, 'success'])->name('purchase.success');
-Route::get('/purchase/cancel',  [PurchaseController::class, 'cancel'])->name('purchase.cancel');
+Route::controller(PurchaseController::class)->group(function () {
+    Route::get('/purchase/success', 'success')->name('purchase.success'); // 支払い完了
+    Route::get('/purchase/cancel',   'cancel')->name('purchase.cancel');  // 支払いキャンセル
+});
 
 // ログイン済み
 Route::middleware(['auth'])->group(function () {
@@ -36,49 +37,50 @@ Route::middleware(['auth'])->group(function () {
 
 // ログイン済みかつメール認証済み
 Route::middleware(['auth', 'verified'])->group(function () {
-    // 購入画面
-    Route::get('purchase/{item_id}', [PurchaseController::class, 'index'])->name('purchase.index');
-    // 購入実行
-    Route::post('purchase/', [PurchaseController::class, 'store'])->name('purchase.store');
-    // 購入支払い先変更画面
-    Route::get('purchase/address/{item_id}', [PurchaseController::class, 'edit'])->name('purchase.edit');
-    // 購入支払い先変更実行
-    Route::put('purchase/address/{item_id}', [PurchaseController::class, 'store_address'])->name('purchase.store_address');
-    // マイページ
-    Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
-    // プロフィール新規作成
-    Route::post('/mypage/profile/store', [MypageController::class, 'store'])->name('mypage.store');
-    // マイページ（プロフィール設定）画面
-    Route::get('/mypage/profile', [MypageController::class, 'edit'])->name('mypage.edit');
-    // プロフィール更新
-    Route::put('/mypage/profile/{id}', [MypageController::class, 'update'])->name('mypage.update');
-    // 出品画面
-    Route::get('/sell', [ItemController::class, 'sell'])->name('sell');
-    // 出品実行
-    Route::post('/sell', [ItemController::class, 'store'])->name('sell.post');
-    // いいねの追加・削除
-    Route::post('/items/{id}/like', [ItemController::class, 'toggleLike'])->name('items.toggle-like');
 
-    // コメント保存
-    Route::post('/items/comment/{item}', [CommentController::class, 'store'])->name('comment.store');
+    Route::controller(PurchaseController::class)->group(function () {
+        Route::get ('purchase/{item_id}',         'index')        ->name('purchase.index');         // 購入画面
+        Route::post('purchase/',                  'store')        ->name('purchase.store');         // 購入実行
+        Route::get ('purchase/address/{item_id}', 'edit')         ->name('purchase.edit');          // 購入支払い先変更画面
+        Route::put ('purchase/address/{item_id}', 'store_address')->name('purchase.store_address'); // 購入支払い先変更実行
+    });
+
+    Route::controller(MypageController::class)->group(function () {
+        Route::get ('/mypage',               'index') ->name('mypage.index');  // マイページ
+        Route::post('/mypage/profile/store', 'store') ->name('mypage.store');  // プロフィール作成
+        Route::get ('/mypage/profile',       'edit')  ->name('mypage.edit');   // プロフィール設定
+        Route::put ('/mypage/profile/{id}',  'update')->name('mypage.update'); // プロフィール更新
+    });
+
+    Route::controller(ItemController::class)->group(function () {
+        Route::get ('/sell',            'sell')      ->name('sell');              // 出品画面
+        Route::post('/sell',            'store')     ->name('sell.post');         // 出品実行
+        Route::post('/items/{id}/like', 'toggleLike')->name('items.toggle-like'); // いいねの追加・削除
+    });
+
+    Route::controller(CommentController::class)->group(function () {
+        Route::post('/items/comment/{item}', 'store')->name('comment.store');     // コメント保存
+    });
 });
 
+// ゲスト専用ルート（ログイン・登録）
 Route::middleware('guest')->group(function () {
-    // 登録フォーム表示
-    Route::get('/register', [AuthController::class, 'create'])->name('register');
-    // 登録処理
-    Route::post('/register', [AuthController::class, 'store'])->name('register.post');
-    // ログインフォーム表示
-    Route::get('/login', [AuthController::class, 'login'])->name('login');
-    // ログイン処理
-    Route::post('/login', [AuthController::class, 'send'])->name('login.post');
+    Route::controller(AuthController::class)->group(function () {
+        Route::get ('/register', 'create')->name('register');      // 登録フォーム表示
+        Route::post('/register', 'store') ->name('register.post'); // 登録処理
+        Route::get ('/login',    'login') ->name('login');         // ログインフォーム表示
+        Route::post('/login',    'send')  ->name('login.post');    // ログイン処理
+    });
 });
 
 // 共通でアクセスできるルート
-Route::get('/', [ItemController::class, 'index'])->name('index');
-Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.show');
+Route::controller(ItemController::class)->group(function () {
+    Route::get('/',           'index')->name('index');      // 商品一覧
+    Route::get('/items/{id}', 'show') ->name('items.show'); // 商品詳細
+});
 
 // メール認証用ルート
+
 // 認証メール送信後の画面（例：認証待ち）
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
@@ -87,13 +89,15 @@ Route::get('/email/verify', function () {
 // メールのリンクをクリックしたとき
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
+
     return redirect()->route('mypage.edit')
-        ->with('success', 'メール認証が完了しました！');;
+        ->with('success', 'メール認証が完了しました！');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 // 再送用
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
+
     return back()->with('success', '認証メールを再送しました。');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 

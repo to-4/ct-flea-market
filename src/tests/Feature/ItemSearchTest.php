@@ -6,13 +6,11 @@ use App\Models\Item;
 use App\Models\Like;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ItemSearchTest extends TestCase
 {
-
     use RefreshDatabase;
 
     #[Test]

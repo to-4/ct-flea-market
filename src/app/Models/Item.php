@@ -63,22 +63,27 @@ class Item extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function itemCondition()
     {
         return $this->belongsTo(ItemCondition::class, 'item_condition_id');
     }
+
     public function purchase()
     {
         return $this->HasOne(Purchase::class);
     }
+
     public function comments()
     {
         return $this->HasMany(Comment::class);
     }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_item', 'item_id', 'category_id');
     }
+
     public function likes()
     {
         return $this->hasMany(Like::class);

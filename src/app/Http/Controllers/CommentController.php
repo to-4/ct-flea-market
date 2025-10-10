@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Comment;
-use App\Models\Item;
 use App\Http\Requests\StoreCommentRequest;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
@@ -26,6 +24,6 @@ class CommentController extends Controller
         ]);
 
         return redirect()->route('items.show', $item_id)
-                         ->with('success', 'コメントを投稿しました');
+            ->with('success', 'コメントを投稿しました');
     }
 }

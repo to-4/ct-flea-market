@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use Stripe\Stripe;
-use Stripe\Checkout\Session as CheckoutSession;
-use Stripe\PaymentIntent;
 use App\Models\Item;
 use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Auth;
+use Stripe\Checkout\Session as CheckoutSession;
+use Stripe\PaymentIntent;
+use Stripe\Stripe;
 
 class PaymentService
 {
@@ -57,8 +57,8 @@ class PaymentService
                 'method_id'  => PaymentMethod::CODE_CARD,
                 'address_id' => $address_id,
             ],
-            'success_url' => route('purchase.success', [], true) . '?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url'  => route('purchase.cancel',  [], true),
+            'success_url' => route('purchase.success', [], true).'?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url'  => route('purchase.cancel', [], true),
         ]);
 
         return $session->url;

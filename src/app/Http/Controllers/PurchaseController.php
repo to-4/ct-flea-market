@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Item;
-use App\Models\Purchase;
-use App\Models\PaymentMethod;
-use App\Models\User;
-use App\Models\Profile;
-use App\Models\Address;
 use App\Http\Requests\StoreAddressRequest;
+use App\Models\Address;
+use App\Models\Item;
+use App\Models\PaymentMethod;
+use App\Models\Purchase;
 use App\Services\PaymentService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PurchaseController extends Controller
@@ -95,7 +93,7 @@ class PurchaseController extends Controller
     {
         $validated = $request->validated();
 
-        $address = new Address();
+        $address = new Address;
         $address->user_id       = Auth::id();
         $address->postal_code   = $validated['postal_code'];
         $address->address_line1 = $validated['address_line1'];
@@ -111,14 +109,14 @@ class PurchaseController extends Controller
     {
 
         $sessionId = $request->query('session_id');
-        if (!$sessionId) {
+        if (! $sessionId) {
             return redirect()->route('mypage.index')->with('error', 'セッション情報がありません。');
         }
 
         // Stripe APIキーを設定（最初に必須）
         \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
 
-        $session = \Stripe\Checkout\Session::retrieve($sessionId);
+        $session   = \Stripe\Checkout\Session::retrieve($sessionId);
         $itemId    = $session->metadata->item_id;
         $userId    = $session->metadata->user_id;
         $methodId  = $session->metadata->method_id;

@@ -53,5 +53,4 @@ class StoreAddressRequest extends FormRequest
             'address_line2.max' => '建物は 120 文字以内で入力してください',
         ];
     }
-
 }

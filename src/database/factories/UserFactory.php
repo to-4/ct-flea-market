@@ -23,7 +23,6 @@ class UserFactory extends Factory
         ];
     }
 
-
     // Profile付きのユーザーを作成する状態
     public function withProfile(?string $displayName = null): static
     {

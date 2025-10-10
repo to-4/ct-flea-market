@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Category;
-use App\Models\ItemCondition;
 use App\Models\Item;
+use App\Models\ItemCondition;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -64,31 +63,30 @@ class ItemRegisterTest extends TestCase
             'description'       => 'これはテスト用の説明文です。',
             'price'             => 15000,
             'user_id'           => $user->id,
-            'categories'        => [$category->id,],
+            'categories'        => [$category->id],
             'item_condition_id' => $condition->id,
-            'image_url'         => $file
+            'image_url'         => $file,
         ];
 
-        //dd($formData);
         $response = $this->followingRedirects()
-                         ->post(
-                            route('sell.post'),
-                            $formData,
-                            ['Content-Type' => 'multipart/form-data']
-                        );
+            ->post(
+                route('sell.post'),
+                $formData,
+                ['Content-Type' => 'multipart/form-data']
+            );
         $response->assertStatus(200); // 200: リダイレクト後 の GET
 
         // 6. itemsテーブルにデータが保存されていることを確認
         //    ※ image_url は、/storage/items/***.png となるので、モデルから内容を取得
         $item = Item::latest()->first();
         $this->assertDatabaseHas('items', [
-            'user_id'          => $user->id,
-            'item_condition_id'=> $condition->id,
-            'name'             => 'テストバッグ',
-            'brand_name'       => 'テストブランド',
-            'description'      => 'これはテスト用の説明文です。',
-            'price'            => 15000,
-            'image_url'        => $item->image_url,
+            'user_id'           => $user->id,
+            'item_condition_id' => $condition->id,
+            'name'              => 'テストバッグ',
+            'brand_name'        => 'テストブランド',
+            'description'       => 'これはテスト用の説明文です。',
+            'price'             => 15000,
+            'image_url'         => $item->image_url,
         ]);
 
         // 7. category_item テーブルにデータが保存されていることを確認

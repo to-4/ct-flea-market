@@ -23,7 +23,7 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'name'     => ['required'],
-            'email'    => ['required','email', 'unique:users,email'],
+            'email'    => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'min:8'],
             'password_confirmation' => ['required', 'same:password'],
         ];
@@ -40,7 +40,7 @@ class StoreUserRequest extends FormRequest
             'password.required' => 'パスワードを入力してください',
             'password.min'      => 'パスワードは8文字以上で入力してください',
             'password_confirmation.required' => '確認用パスワードを入力してください',
-            'password_confirmation.same' => 'パスワードと一致しません',
+            'password_confirmation.same'     => 'パスワードと一致しません',
         ];
     }
 }

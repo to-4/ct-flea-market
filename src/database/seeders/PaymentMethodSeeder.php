@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\PaymentMethod;
+use Illuminate\Database\Seeder;
 
 class PaymentMethodSeeder extends Seeder
 {
@@ -16,16 +15,16 @@ class PaymentMethodSeeder extends Seeder
         // 指定2件
         $contents = [
             [
-                'id' => PaymentMethod::CODE_KONBINI,
-                'name' => 'コンビニ支払い',
+                'id'         => PaymentMethod::CODE_KONBINI,
+                'name'       => 'コンビニ支払い',
                 'sort_order' => 1,
-                'is_active' => true,
+                'is_active'  => true,
             ],
             [
-                'id' => PaymentMethod::CODE_CARD,
-                'name' => 'カード支払い',
+                'id'         => PaymentMethod::CODE_CARD,
+                'name'       => 'カード支払い',
                 'sort_order' => 2,
-                'is_active' => true,
+                'is_active'  => true,
             ],
         ];
 

@@ -31,6 +31,14 @@
     + DB_DATABASE=laravel_db
     + DB_USERNAME=laravel_user
     + DB_PASSWORD=laravel_pass
+
+    ...
+    # Stripe API キー
+    - STRIPE_PUBLIC=pk_test_**************
+    - STRIPE_SECRET=sk_test_**************
+    + STRIPE_PUBLIC=公開可能キー(pk_test_**)
+    + STRIPE_SECRET=秘密キー(sk_test_**)
+
     ```
     > _※ 上記の "-" は削除行、"+"は追加行を表します_
 5.  アプリケーションキーの作成
@@ -49,6 +57,10 @@
     ```
     php artisan storage:link
     ```
+9.  Stripe SDK の導入
+    ```
+    composer require stripe/stripe-php
+    ```
 
 ## 使用技術
 
@@ -64,3 +76,31 @@
 
 - 開発環境：http://localhost/
 - phpMyAdmin：http://localhost:8080/
+- MailHog：http://localhost:8025/
+
+---
+
+## ✉️ メール認証（MailHog 使用）
+
+本アプリでは、MailHogを使用してメール認証を実装しています。  
+実際には外部メール送信は行われず、MailHog上で確認できます。
+
+1. 新規登録後、MailHogにメールが届く  
+2. メール本文にある6桁コードを認証画面で入力  
+3. 認証成功後、ログイン可能になります  
+
+MailHog URL: [http://localhost:8025](http://localhost:8025)
+
+## 💳 テスト用 Stripe 決済情報
+
+本アプリは、Stripe のテストモードで動作確認を行います。
+実際に金銭は発生しません。
+
+| 項目 | 入力例 | 備考 |
+|------|---------|------|
+| カード番号 | 4242 4242 4242 4242 | 常に成功するテストカード |
+| 有効期限 | 任意の未来日（例：12 / 34） | 未来日なら任意 |
+| セキュリティコード | 123 | 任意の3桁 |
+| カード名義 | TARO YAMADA | 任意の英字 |
+
+※ テストキー（pk_test_ / sk_test_）を .env に設定してください。

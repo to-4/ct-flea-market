@@ -9,13 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-public function up(): void
-{
-    Schema::table('users', function (Blueprint $table) {
-        $table->string('email_verification_code', 6)->nullable();
-        $table->timestamp('email_verification_expires_at')->nullable();
-    });
-}
+    public function up(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('email_verification_code', 6)->nullable();
+            $table->timestamp('email_verification_expires_at')->nullable();
+        });
+    }
+
     /**
      * Reverse the migrations.
      */

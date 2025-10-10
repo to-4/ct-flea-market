@@ -50,14 +50,17 @@ class Purchase extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function item()
     {
         return $this->belongsTo(Item::class);
     }
+
     public function shippingAddress()
     {
         return $this->belongsTo(Address::class, 'shipping_address_id');
     }
+
     public function paymentMethod()
     {
         return $this->belongsTo(PaymentMethod::class);

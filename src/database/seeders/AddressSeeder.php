@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Address;
+use Illuminate\Database\Seeder;
 
 class AddressSeeder extends Seeder
 {
@@ -16,11 +16,11 @@ class AddressSeeder extends Seeder
     {
         $contents = [
             [
-                'user_id' => 1,
-                'postal_code' => '123-4567',
+                'user_id'       => 1,
+                'postal_code'   => '123-4567',
                 'address_line1' => '東京都東西区南北１－２',
                 'address_line2' => '',
-                'is_default' => true,
+                'is_default'    => true,
             ],
         ];
 

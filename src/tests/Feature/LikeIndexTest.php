@@ -2,19 +2,18 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
+use App\Models\Address;
 use App\Models\Item;
 use App\Models\Like;
-use App\Models\Purchase;
 use App\Models\PaymentMethod;
-use App\Models\Address;
+use App\Models\Purchase;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LikeIndexTest extends TestCase
 {
-
     use RefreshDatabase;
 
     #[Test]
@@ -42,7 +41,7 @@ class LikeIndexTest extends TestCase
         ]);
 
         // 5. マイリストページにアクセス
-        $response = $this->get(route('index', ['tab'=>'mylist']));
+        $response = $this->get(route('index', ['tab' => 'mylist']));
 
         // 6. 他人の商品（いいね済み）は表示される
         $response->assertSee($otherItem->name);

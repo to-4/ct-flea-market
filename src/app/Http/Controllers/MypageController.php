@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateProfileRequest;
+use App\Models\Address;
+use App\Models\Item;
+use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\Profile;
-use App\Models\Address;
-use App\Models\Item;
-
-use App\Http\Requests\UpdateProfileRequest;
-
 class MypageController extends Controller
 {
-
     /**
      * マイページ画面の表示
      */
     public function index()
     {
         $user = Auth::user();
-        if (!$user) {
+        if (! $user) {
             return redirect()->route('login');
         }
 
@@ -32,17 +29,17 @@ class MypageController extends Controller
         if ($page === 'sell') {
             // 出品した商品一覧（自分が出品者）
             $items = Item::withCount('purchase')
-                        ->where('user_id', $user->id)
-                        ->orderBy('created_at', 'desc')
-                        ->get();
+                ->where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
         } else {
             // 購入した商品一覧（Purchase 経由で取得）
             $items = $user->purchases()
-                          ->with('item')                          // Purchase モデルに item() リレーションがある前提
-                          ->latest()
-                          ->get()                                 // ユーザー購入履歴（商品データ付き）
-                          ->map(fn($purchase) => $purchase->item) // 商品データのみ抽出
-                          ->filter(fn($v) => !is_null($v));       // null を除外
+                ->with('item')                           // Purchase モデルに item() リレーションがある前提
+                ->latest()
+                ->get()                                  // ユーザー購入履歴（商品データ付き）
+                ->map(fn ($purchase) => $purchase->item) // 商品データのみ抽出
+                ->filter(fn ($v) => ! is_null($v));      // null を除外
         }
 
         return view('mypages.index', compact('user', 'items', 'profile', 'page'));
@@ -54,7 +51,7 @@ class MypageController extends Controller
     public function edit(Request $request)
     {
         $user = Auth::user();
-        if (!$user) {
+        if (! $user) {
             return redirect()->route('login');
         }
 
@@ -62,11 +59,10 @@ class MypageController extends Controller
         $user->loadMissing('profile');
         $profile = $user->profile;
 
-        if (!$profile) {
+        if (! $profile) {
             // 新規生成（DB未保存）、住所は紐付けず初期値のまま
-            $profile = new Profile();
-        }
-        else {
+            $profile = new Profile;
+        } else {
             // 既存プロフィールのときは住所も取得
             $profile->loadMissing('address');
         }
@@ -80,7 +76,7 @@ class MypageController extends Controller
     public function store(UpdateProfileRequest $request)
     {
         $user = Auth::user();
-        if (!$user) {
+        if (! $user) {
             return redirect()->route('login');
         }
 
@@ -120,7 +116,7 @@ class MypageController extends Controller
     public function update(UpdateProfileRequest $request, int $id)
     {
         $user = Auth::user();
-        if (!$user) {
+        if (! $user) {
             return redirect()->route('login');
         }
 
@@ -140,15 +136,15 @@ class MypageController extends Controller
         $profile->display_name = $validated['displayName'];
 
         // 住所更新（なければ作成して紐付け）
-        $postal    = $validated['postal_code']   ?? null;
-        $addr1     = $validated['address_line1'] ?? null;
-        $addr2     = $validated['address_line2'] ?? null;
+        $postal = $validated['postal_code']   ?? null;
+        $addr1  = $validated['address_line1'] ?? null;
+        $addr2  = $validated['address_line2'] ?? null;
 
         if ($profile->address_id) {
             $address = Address::find($profile->address_id);
             if ($address) {
-                $address->postal_code   = $postal   ?? $address->postal_code;
-                $address->address_line1 = $addr1    ?? $address->address_line1;
+                $address->postal_code   = $postal ?? $address->postal_code;
+                $address->address_line1 = $addr1  ?? $address->address_line1;
                 $address->address_line2 = $addr2; // 明示的に上書き（null可）
                 $address->is_default    = true;
                 $address->save();
@@ -157,9 +153,9 @@ class MypageController extends Controller
             Address::where('user_id', $user->id)->where('is_default', true)->update(['is_default' => false]);
             $newAddress = Address::create([
                 'user_id'       => $user->id,
-                'postal_code'   => $postal   ?? '',
-                'address_line1' => $addr1    ?? '',
-                'address_line2' => $addr2    ?? null,
+                'postal_code'   => $postal ?? '',
+                'address_line1' => $addr1  ?? '',
+                'address_line2' => $addr2  ?? null,
                 'is_default'    => true,
             ]);
             $profile->address_id = $newAddress->id;

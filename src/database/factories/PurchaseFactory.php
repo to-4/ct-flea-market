@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Item;
-use App\Models\User;
-use App\Models\PaymentMethod;
 use App\Models\Address;
+use App\Models\Item;
+use App\Models\PaymentMethod;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PurchaseFactory extends Factory

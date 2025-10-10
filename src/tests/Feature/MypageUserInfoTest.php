@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Item;
-use App\Models\Purchase;
 use App\Models\Profile;
+use App\Models\Purchase;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class MypageUserInfoTest extends TestCase
@@ -68,12 +67,12 @@ class MypageUserInfoTest extends TestCase
 
         // 10. 出品商品一覧（?page=sell）
         $responseSell = $this->get(route('mypage.index', ['page' => 'sell']));
-        $responseSell->assertSee('Bの出品商品');
+        $responseSell->assertSee    ('Bの出品商品');
         $responseSell->assertDontSee('Aの出品商品');
 
         // 11. 購入商品一覧（?page=buy）
         $responseBuy = $this->get(route('mypage.index', ['page' => 'buy']));
-        $responseBuy->assertSee('Aの出品商品');
+        $responseBuy->assertSee    ('Aの出品商品');
         $responseBuy->assertDontSee('Bの出品商品');
     }
 }

@@ -3,10 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\Item;
-use App\Models\User;
 use App\Models\Purchase;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 

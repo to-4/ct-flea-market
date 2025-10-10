@@ -15,23 +15,18 @@ use Illuminate\Database\Eloquent\Model;
  * Properties:
  *
  * @property int $id
- *     主キーID（自動採番）
- *
+ *                   主キーID（自動採番）
  * @property VARCHAR(255) $name
- *     支払方法の名称
- *
- * @property INT $sort_order
- *     ソート順
- *
- * @property BOOL $is_active
- *     有効フラグ
- *     false の場合は、無効
- *
+ *                              支払方法の名称
+ * @property int $sort_order
+ *                           ソート順
+ * @property bool $is_active
+ *                           有効フラグ
+ *                           false の場合は、無効
  * @property Carbon|null $created_at
- *     タスクが作成された日時（Laravelが自動で管理）
- *
+ *                                   タスクが作成された日時（Laravelが自動で管理）
  * @property Carbon|null $updated_at
- *     タスクが最後に更新された日時（Laravelが自動で管理）
+ *                                   タスクが最後に更新された日時（Laravelが自動で管理）
  */
 class PaymentMethod extends Model
 {
@@ -43,11 +38,12 @@ class PaymentMethod extends Model
      * ※2. Stripe の payment_method_type でも、'konbini' なのでそれに倣う
      */
     public const CODE_KONBINI = 1;
+
     /**
      * 支払いID：カード払い
      * ※ シーディングや Stripe サービスでも使用
      */
-    public const CODE_CARD    = 2;
+    public const CODE_CARD = 2;
 
     protected $fillable = [
         'name',
