@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAddressRequest;
+use App\Http\Requests\StorePurchaseRequest;
 use App\Models\Address;
 use App\Models\Item;
 use App\Models\PaymentMethod;
@@ -51,15 +52,13 @@ class PurchaseController extends Controller
     /**
      * 購入処理を実行
      */
-    public function store(Request $request, PaymentService $paymentService)
+    public function store(StorePurchaseRequest $request, PaymentService $paymentService)
     {
-        $request->validate([
-            'payment_method_id' => 'required|exists:payment_methods,id',
-        ]);
+        $validated = $request->validated();
 
         $item = Item::findOrFail($request->input('item_id'));
-        $addressId = $request->input('address_id');
-        $methodId  = $request->input('payment_method_id');
+        $addressId = $validated['address_id'];
+        $methodId  = $validated['payment_method_id'];
 
         // すでに購入済みならリダイレクト
         if ($item->purchase) {
