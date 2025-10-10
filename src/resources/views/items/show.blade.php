@@ -64,7 +64,7 @@
                 <div class="comment">
                     <div class="comment-header">
                         <div class="comment-user-image">
-                            <img src="{{ $comment->user->profile->image_url ?? '' }}" alt="ユーザー画像">
+                            <img src="{{ $comment->user->profile->image_url ?: asset('images/no-image.png') }}" alt="ユーザー画像">
                         </div>
                         <span class="comment-user-name">{{ $comment->user->profile->display_name ?? $comment->user->name }}</span>
                     </div>
